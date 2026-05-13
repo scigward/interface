@@ -181,7 +181,7 @@ export class W2GClient extends EventEmitter<{index: [number], player: [PlayerSta
           this.media = data.payload
           const media = (await client.single(mediaId)).data?.Media
           if (media == null) break
-          server.play(torrent, media, episode)
+          server.playHash(torrent, media, episode)
         }
 
         break

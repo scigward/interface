@@ -443,8 +443,8 @@
   let openPath: (path: string[]) => Promise<void>
   let open = false
 
-  function openSettings (e: MouseEvent) {
-    if (e.button !== 2) return
+  function openSettings () {
+    if ($inputType !== 'mouse' || open) return
     open = true
   }
 
@@ -776,7 +776,6 @@
   on:dragover|preventDefault
   on:paste={e => subtitles?.handleTransfer(e)}
   on:drop={e => subtitles?.handleTransfer(e)}
-  on:click={openSettings}
 >
   {#if useMediaBunnyPlayback}
     {#await import('./bunny/video.svelte') then BunnyVideo}
@@ -813,6 +812,7 @@
         on:timeupdate={checkCompletion}
         on:loadedmetadata={autoPlay}
         on:pointermove={() => resetMove()}
+        on:contextmenu={openSettings}
         class={cn('size-full touch-none object-contain',
           immersed && 'cursor-none',
           isMiniplayer && 'cursor-pointer',
@@ -849,6 +849,7 @@
       on:timeupdate={checkCompletion}
       on:loadedmetadata={autoPlay}
       on:pointermove={() => resetMove()}
+      on:contextmenu={openSettings}
     />
   {/if}
   {#if !isMiniplayer}

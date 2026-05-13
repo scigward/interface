@@ -635,6 +635,7 @@
   on:click
   on:dblclick
   on:pointermove
+  on:contextmenu
   use:setupBackend={src}
   {...$$restProps}
   width={videoWidth}

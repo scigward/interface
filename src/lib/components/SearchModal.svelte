@@ -109,8 +109,8 @@
 
   let inputText = ''
 
-  function play (result: Pick<TorrentResult, 'hash'>) {
-    server.play(result.hash, $searchStore!.media, $searchStore!.episode)
+  function play ({ hash, link }: TorrentResult) {
+    server.playHash(hash, $searchStore!.media, $searchStore!.episode, link)
     goto('/app/player/')
     close()
   }
@@ -171,9 +171,11 @@
 
   const torrentRx = /(^magnet:){1}|(^[A-F\d]{8,40}$){1}|(.*\.torrent$){1}/i
 
-  function findTorrentIdentifiers (hash: string) {
-    if (torrentRx.test(hash)) {
-      play({ hash })
+  function findTorrentIdentifiers (identifier: string) {
+    if (torrentRx.test(identifier) && $searchStore) {
+      server.playIdentifier(identifier, $searchStore.media, $searchStore.episode)
+      goto('/app/player/')
+      close()
     }
   }
 
@@ -198,7 +200,7 @@
       for (const file of await transferToFileList(e)) {
         if (file instanceof Blob) {
           if (file.type === 'application/x-bittorrent' || file.name.endsWith('.torrent')) {
-            server.playFile(new Uint8Array(await file.arrayBuffer()), $searchStore.media, $searchStore.episode)
+            server.playIdentifier(new Uint8Array(await file.arrayBuffer()), $searchStore.media, $searchStore.episode)
             goto('/app/player/')
             close()
           }

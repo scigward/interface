@@ -46,16 +46,20 @@ export const server = new class ServerClient {
 
   trackers = derived(this._timedSafeStore({}, native.trackers, 120_000), ($trackers) => Object.entries($trackers).map(([announce, trackers]) => ({ announce, ...trackers })))
 
-  library = this._timedSafeStore([], native.library, 120_000)
+  library = this._timedSafeStore([], native.library, 120_000, true)
 
-  _timedSafeStore<T> (defaultData: T, fn: (id: string) => Promise<T>, duration = SUPPORTS.isUnderPowered ? 15000 : 5000) {
+  _timedSafeStore<T> (defaultData: T, fn: (id: string) => Promise<T>, duration = SUPPORTS.isUnderPowered ? 15000 : 5000, skipActive = false) {
     return writable<T>(defaultData, set => {
       let listener = 0
 
       const update = async () => {
         try {
-          const id = (await get(this.active))?.id
-          if (id) set(await fn(id))
+          if (skipActive) {
+            set(await fn(''))
+          } else {
+            const id = (await get(this.active))?.id
+            if (id) set(await fn(id))
+          }
         } catch (error) {
           console.warn(error)
         }
@@ -70,7 +74,7 @@ export const server = new class ServerClient {
   constructor () {
     const last = get(this.last)
     if (last) {
-      this.play(last.id, last.media, last.episode)
+      this.playHash(last.id, last.media, last.episode)
       debug('restored last torrent', last.id, last.media.title?.userPreferred, last.episode)
     }
 
@@ -92,32 +96,31 @@ export const server = new class ServerClient {
     this.downloaded.value = new Set(await native.cachedTorrents())
   }
 
-  play (id: string, media: Media, episode: number, torrent: string | ArrayBufferView = id) {
-    if (!media || !id) return
-    debug('playing torrent', id, media.id, episode)
-    this.last.set({ id, media, episode })
+  playHash (infoHash: string, media: Media, episode: number, torrent: string | ArrayBufferView = infoHash) {
+    if (!media || !infoHash) return
+    debug('playing torrent', infoHash, media.id, episode)
+    this.last.set({ id: infoHash, media, episode })
     client.setInitialState(media, episode)
-    this.active.value = this._play(id, torrent, media, episode)
-    w2globby.value?.mediaChange({ episode, mediaId: media.id, torrent: id })
+    this.active.value = this._loadTorrent(infoHash, torrent, media, episode)
+    w2globby.value?.mediaChange({ episode, mediaId: media.id, torrent: infoHash })
     return this.active.value
   }
 
-  async playFile (id: ArrayBufferView, media: Media, episode: number) {
-    if (!media || !id) return
-    debug('playing torrent file', id, media.id, episode)
-    const { infoHash } = await (parseTorrent(id) as Promise<{ infoHash: string }>)
-    return await this.play(infoHash, media, episode, id)
+  async playIdentifier (identifier: ArrayBufferView | string, media: Media, episode: number) {
+    if (!media || !identifier) return
+    debug('playing torrent file', identifier, media.id, episode)
+    const { infoHash } = await (parseTorrent(identifier) as Promise<{ infoHash: string }>)
+    return await this.playHash(infoHash, media, episode, identifier)
   }
 
-  async _play (id: string, torrent: string | ArrayBufferView, media: Media, episode: number) {
-    const result = { id, media, episode, files: await native.playTorrent(torrent, media.id, episode) }
+  async _loadTorrent (infoHash: string, torrent: string | ArrayBufferView, media: Media, episode: number) {
+    const result = { id: infoHash, media, episode, files: await native.playTorrent(torrent, media.id, episode) }
     debug('torrent play result', result)
 
-    const hash = result.files[0]!.hash
-    if (get(this.last)?.id === id) this.last.set({ id: hash, media, episode })
-    this.downloaded.value.add(hash)
+    if (get(this.last)?.id === infoHash) this.last.set({ id: infoHash, media, episode })
+    this.downloaded.value.add(infoHash)
 
-    this._addNZBs(hash, media, episode, result.files.map(({ name }) => name))
+    this._addNZBs(infoHash, media, episode, result.files.map(({ name }) => name))
 
     native.checkAvailableSpace().then(space => {
       if (space < 1e9) {
