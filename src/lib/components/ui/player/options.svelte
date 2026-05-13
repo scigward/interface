@@ -45,7 +45,7 @@
   $: tracks = subtitles?._tracks
   $: current = subtitles?.current
 
-  let open = false
+  export let open = false
 
   let treeState: Writable<string[]>
 

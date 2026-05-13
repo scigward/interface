@@ -365,6 +365,18 @@ export function dragScroll (node: HTMLElement) {
     isDragging = false
   }, ctrl)
 
+  // never implement this, it breaks touch interactions on custom click and hoverclick
+  // node.addEventListener('pointerdown', e => {
+  //   if (e.pointerType !== 'mouse') return
+  //   e.stopImmediatePropagation()
+  //   e.stopPropagation()
+  //   node.setPointerCapture(e.pointerId)
+  // })
+
+  // node.addEventListener('pointerup', e => {
+  //   node.releasePointerCapture(e.pointerId)
+  // })
+
   return { destroy: () => ctrl.abort() }
 }
 

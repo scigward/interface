@@ -63,7 +63,7 @@
 </script>
 
 <div class='min-w-0 -ml-14 pl-14 grow items-center flex flex-col h-full overflow-y-auto pb-10' use:dragScroll on:scroll={handleScroll} bind:this={container} style:--custom={media.coverImage?.color ?? '#fff'} style:--red={r} style:--green={g} style:--blue={b}>
-  <div class='gap-6 w-full pt-4 md:pt-32 flex flex-col items-center justify-center max-w-[1600px] px-3 xl:px-14'>
+  <div class='gap-4 md:gap-6 w-full pt-4 md:pt-32 flex flex-col items-center justify-center max-w-[1600px] px-3 xl:px-14'>
     <div class='flex flex-col md:flex-row w-full items-center md:items-end gap-5 pt-12'>
       <Dialog.Root portal='#root'>
         <Dialog.Trigger class='shrink-0 w-[180px] h-[256px] rounded overflow-hidden relative group focus-visible:ring-1 focus-visible:ring-ring select:scale-[1.02] transition-transform duration-200'>
@@ -157,11 +157,26 @@
         {/each}
       </div>
     </div>
-    <div class='flex gap-2 items-center justify-center md:justify-start md:self-start md:flex-wrap [flex-wrap:balance]'>
+    <div class='flex gap-2 items-center justify-start self-start w-full overflow-x-auto' use:dragScroll>
       {#each media.genres ?? [] as genre (genre)}
         <Button variant='secondary' class='select:!text-custom h-7 text-nowrap' on:click={() => goto('/app/search', { state: { search: { genre: [genre] } } })}>
           {genre}
         </Button>
+      {/each}
+      {#each media.tags ?? [] as tag, i(tag?.id ?? i)}
+        {@const spoiler = !!tag?.isMediaSpoiler || !!tag?.isGeneralSpoiler}
+        {@const underPoweredSpoiler = spoiler && SUPPORTS.isUnderPowered}
+        {@const hide = tag?.isAdult && !$settings.showHentai}
+        {#if !hide}
+          <div class={cn(
+            'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium bg-secondary/40 text-muted-foreground shadow-sm px-4 py-2 h-7 text-nowrap border-2 border-dashed border-secondary',
+            underPoweredSpoiler && 'transition-colors text-transparent select:text-muted-foreground'
+          )}>
+            <span class={cn(spoiler && !underPoweredSpoiler && 'blur-[6px] select:blur-0 transition-[filter]')}>
+              {tag?.name}
+            </span>
+          </div>
+        {/if}
       {/each}
     </div>
     <slot />

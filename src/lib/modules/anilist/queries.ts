@@ -101,6 +101,14 @@ trailer {
   id,
   site
 },
+tags {
+  id,
+  name,
+  isMediaSpoiler,
+  isGeneralSpoiler,
+  rank,
+  isAdult
+},
 mediaListEntry {
   ...FullMediaList
 },
