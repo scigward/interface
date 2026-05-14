@@ -28,11 +28,11 @@
   $: status = list(media)
 </script>
 
-<div class='text-white p-4 cursor-pointer shrink-0 relative pointer-events-auto [content-visibility:auto] [contain-intrinsic-size:auto_152px_auto_290.4px]' class:![content-visibility:visible]={!hidden} class:z-40={!hidden} use:hover={[onclick, onhover]}>
+<div class='text-white cursor-pointer shrink-0 relative pointer-events-auto' use:hover={[onclick, onhover]}>
   {#if !hidden}
     <PreviewCard {media} />
   {/if}
-  <div class='item w-[9.5rem] flex flex-col'>
+  <div class='item w-[11.5rem] h-[323px] flex flex-col p-4 [content-visibility:auto] [contain-intrinsic-size:auto_9.5rem_auto_291px]'>
     <div class='h-[13.5rem]'>
       <Load src={coverMedium(media)} alt='cover' class='object-cover size-full rounded' color={media.coverImage?.color} />
     </div>
@@ -58,6 +58,5 @@
 <style>
   .item {
     animation: 0.3s ease 0s 1 load-in;
-    aspect-ratio: 152/290;
   }
 </style>

@@ -6,6 +6,7 @@ import type { Config } from 'tailwindcss'
 const config: Config = {
   plugins: [
     plugin((api) => {
+      api.addVariant('starting', '@starting-style')
       api.addVariant('select', ['&:hover', '&:focus-visible', '&:active'])
       api.addVariant('group-select', [':merge(.group):hover &', ':merge(.group):focus-visible &', ':merge(.group):active &'])
       api.addVariant('fullscreen', '&:fullscreen')

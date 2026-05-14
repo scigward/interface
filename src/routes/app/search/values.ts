@@ -24,6 +24,10 @@ export const genres = [
     label: 'Fantasy'
   },
   {
+    value: 'Hentai',
+    label: 'Hentai'
+  },
+  {
     value: 'Horror',
     label: 'Horror'
   },

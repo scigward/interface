@@ -54,8 +54,6 @@
   $: nativeTitle = media.title?.native ?? media.title?.romaji ?? ''
   $: romajiTitle = media.title?.romaji ?? media.title?.native ?? ''
 
-  let container: HTMLDivElement
-
   $: ({ r, g, b } = colors(media.coverImage?.color ?? undefined))
 
   $: spoiler = $settings.hideSpoilers && ['CURRENT', 'PLANNING'].includes(list(media)!)
@@ -72,7 +70,7 @@
   }
 </script>
 
-<div class='min-w-0 -ml-14 pl-14 grow items-center flex flex-col h-full overflow-y-auto pb-10' use:dragScroll on:scroll={handleScroll} bind:this={container} style:--custom={media.coverImage?.color ?? '#fff'} style:--red={r} style:--green={g} style:--blue={b}>
+<div class='min-w-0 -ml-14 pl-14 grow items-center flex flex-col h-full overflow-y-auto pb-10' use:dragScroll on:scroll={handleScroll} style:--custom={media.coverImage?.color ?? '#fff'} style:--red={r} style:--green={g} style:--blue={b}>
   <div class='gap-4 md:gap-6 w-full pt-4 md:pt-32 flex flex-col items-center justify-center max-w-[1600px] px-3 xl:px-14'>
     <div class='flex flex-col md:flex-row w-full items-center md:items-end gap-5 pt-12'>
       <Dialog.Root portal='#root'>

@@ -4,6 +4,8 @@
 
 :root {
   color-scheme: only dark;
+  interpolate-size: allow-keywords;
+  transition-behavior: allow-discrete;
 }
 
 @layer base {

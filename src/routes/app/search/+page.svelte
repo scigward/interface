@@ -337,7 +337,9 @@
       {#each list(search) as item (item)}
         <button class={cn(badgeVariants(), 'mx-1.5 my-1 group capitalize text-nowrap')} use:click={() => remove(item)}>
           {item}
-          <X class='hidden group-select:block group-focus-visible:block ml-2' size={12} />
+          <span class='hidden group-select:block group-select:starting:w-0 group-select:starting:ml-0 group-select:starting:opacity-0 opacity-0 w-0 ml-0 group-select:w-auto group-select:ml-2 group-select:opacity-100 transition-[width,margin,opacity,display] [transition-behavior:allow-discrete]'>
+            <X size={12} />
+          </span>
         </button>
       {/each}
     </div>

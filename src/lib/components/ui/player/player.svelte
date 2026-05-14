@@ -931,7 +931,7 @@
             {/if}
           </div>
         </div>
-        <Button class='relative animated-icon shrink-0 -mb-2 p-0 size-8 {(SUPPORTS.isAndroid || SUPPORTS.isIOS) ? 'flex' : 'mobile:flex hidden'}' variant='ghost' on:click={fullscreen} on:keydown={keywrap(fullscreen)} data-up='#player-seekbar'>
+        <Button class='relative animated-icon shrink-0 -mb-2 p-0 size-8 {(SUPPORTS.isAndroid || SUPPORTS.isIOS) && !SUPPORTS.isAndroidTV ? 'flex' : 'mobile:flex hidden'}' variant='ghost' on:click={fullscreen} on:keydown={keywrap(fullscreen)} data-up='#player-seekbar'>
           {#if fullscreenElement}
             <div transition:scaleBlurFade class='absolute'>
               <Minimize size='16px' class='p-0.5' strokeWidth='2.5' />
