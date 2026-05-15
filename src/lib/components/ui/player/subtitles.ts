@@ -8,7 +8,7 @@ import { get } from 'svelte/store'
 import type { ResolvedFile } from './resolver'
 import type { MediaInfo } from './util'
 import type { ASSEvent, ASSStyle } from 'jassub/dist/worker/util'
-import type { TorrentFile } from 'native'
+import type { SubtitleTrack, TorrentFile } from 'native'
 
 import { extensions } from '$lib/modules/extensions'
 import native from '$lib/modules/native'
@@ -87,6 +87,8 @@ function detectCJKLanguage (str: string) {
   return null
 }
 
+let lastSelectedTrack: { language?: string, name?: string, number: string } | undefined
+
 const stylesRx = /^Style:[^,]*/gm
 export default class Subtitles {
   video?: HTMLVideoElement
@@ -97,7 +99,7 @@ export default class Subtitles {
   current = writable<number | string>(-1)
   set = get(settings)
 
-  _tracks = writable<Record<number | string, { events: HashMap<{ text: string, time: number, duration: number, style?: string }, ASSEvent>, meta: { language?: string, type: string, header: string, number: string, name?: string }, styles: Record<string | number, number> }>>({})
+  _tracks = writable<Record<number | string, { events: HashMap<{ text: string, time: number, duration: number, style?: string }, ASSEvent>, meta: SubtitleTrack, styles: Record<string | number, number> }>>({})
 
   constructor (video: HTMLVideoElement | undefined, otherFiles: TorrentFile[], mediaInfo: MediaInfo, canvas?: HTMLCanvasElement) {
     this.video = video
@@ -144,7 +146,7 @@ export default class Subtitles {
         newtrack.styles.Default = 0
         if (track.header?.startsWith('[Script Info]')) track.type = 'ass'
         track.header ??= defaultHeader
-        newtrack.meta = track as { language?: string, type: string, header: string, number: string, name?: string }
+        newtrack.meta = track
         const styleMatches = track.header.match(stylesRx)
         if (!styleMatches) continue
         for (let i = 0; i < styleMatches.length; ++i) {
@@ -153,40 +155,56 @@ export default class Subtitles {
       }
       await this.initSubtitleRenderer()
 
+      if (!this.set.subtitleLanguage) return // if lang set to none dont autoselect
+
       const tracks = Object.entries(this._tracks.value)
 
-      if (tracks.length) {
-        if (!this.set.subtitleLanguage) return // if lang set to none dont autoselect
-        if (tracks.length === 1) {
-          await this.selectCaptions(tracks[0]![0])
-        } else {
-          const wantedTrack = tracks.filter(([_, { meta }]) => {
-            return (meta.language ?? 'eng') === this.set.subtitleLanguage
-          })
-          if (wantedTrack.length) {
-            if (wantedTrack.length === 1) return await this.selectCaptions(wantedTrack[0]![0])
+      if (!tracks.length) return
+      if (tracks.length === 1) return await this.selectCaptions(tracks[0]![0])
 
-            const nonForced = wantedTrack.find(([_, { meta }]) => {
-              return !meta.name?.toLowerCase().includes('forced')
-            }) ?? wantedTrack[0]!
+      const audioLanguage = this.set.audioLanguage
 
-            return await this.selectCaptions(nonForced[0])
-          }
+      const selectDesired = async (filteredTracks: typeof tracks) => {
+        if (filteredTracks.length === 1) return await this.selectCaptions(filteredTracks[0]![0])
 
-          const englishTrack = tracks.filter(([_, { meta }]) => meta.language == null || meta.language === 'eng')
-          if (englishTrack.length) {
-            if (englishTrack.length === 1) return await this.selectCaptions(englishTrack[0]![0])
+        const [desired] =
+          // forced for the curent audio lang
+          filteredTracks.find(([_, { meta }]) => {
+            return meta.language === audioLanguage && meta.forced
+          }) ??
+          // non-forced for not the current audio lang
+          filteredTracks.find(([_, { meta }]) => {
+            return meta.language !== audioLanguage && !meta.forced
+          }) ??
+          // default
+          filteredTracks.find(([_, { meta }]) => meta.default) ??
+          filteredTracks[0]!
 
-            const nonForced = englishTrack.find(([_, { meta }]) => {
-              return !meta.name?.toLowerCase().includes('forced')
-            }) ?? englishTrack[0]!
-
-            return await this.selectCaptions(nonForced[0])
-          }
-
-          await this.selectCaptions(tracks[0]![0])
-        }
+        return await this.selectCaptions(desired)
       }
+
+      const matchesLast = lastSelectedTrack && tracks.filter(([_, { meta }]) => meta.language === lastSelectedTrack!.language && meta.name === lastSelectedTrack!.name)
+
+      if (matchesLast) {
+        if (matchesLast.length === 1) return await this.selectCaptions(matchesLast[0]![0])
+
+        const matchesLastNumber = matchesLast.find(([_, { meta }]) => meta.number === lastSelectedTrack!.number)
+        if (matchesLastNumber) return await this.selectCaptions(matchesLastNumber[0])
+
+        return await selectDesired(matchesLast)
+      }
+
+      const wantedLanguages = tracks.filter(([_, { meta }]) => (meta.language ?? 'eng') === this.set.subtitleLanguage)
+      if (wantedLanguages.length) {
+        return await selectDesired(wantedLanguages)
+      }
+
+      const englishFallback = tracks.filter(([_, { meta }]) => (meta.language ?? 'eng') === 'eng')
+      if (englishFallback.length) {
+        return await selectDesired(englishFallback)
+      }
+
+      await this.selectCaptions(tracks[0]![0])
     }).catch(console.error)
 
     native.subtitles(this.selected.hash, this.selected.id, async (subtitle: { text: string, time: number, duration: number, style?: string }, trackNumber) => {
@@ -255,7 +273,7 @@ export default class Subtitles {
     const { header, type } = convert
     const newtrack = this.track(trackNumber)
     newtrack.styles.Default = 0
-    newtrack.meta = { type, header, number: '' + trackNumber, name, language: (detectCJKLanguage(header) ?? name.replace(/[,._-]/g, ' ').trim()) || 'Track ' + trackNumber }
+    newtrack.meta = { type, header, number: '' + trackNumber, name, language: (detectCJKLanguage(header) ?? name.replace(/[,._-]/g, ' ').trim()) || 'Track ' + trackNumber, _compressed: false, default: false, forced: false }
     const styleMatches = header.match(stylesRx)
     if (styleMatches) {
       for (let i = 0; i < styleMatches.length; ++i) {
@@ -277,8 +295,8 @@ export default class Subtitles {
       subContent: defaultHeader,
       fonts: this.fonts,
       maxRenderHeight: parseInt(this.set.subtitleRenderHeight) || 0,
-      defaultFont: STYLE_OVERRIDES[this.set.subtitleStyle]?.FontName ?? 'roboto medium',
-      queryFonts: this.set.missingFont ? 'localandremote' : false,
+      defaultFont: STYLE_OVERRIDES[this.set.subtitleStyle].FontName,
+      queryFonts: 'localandremote',
       workerUrl,
       modernWasmUrl,
       wasmUrl,
@@ -331,17 +349,15 @@ export default class Subtitles {
 
   track (trackNumber: number | string) {
     const tracks = this._tracks.value
-    if (tracks[trackNumber]) {
-      return tracks[trackNumber]
-    } else {
-      tracks[trackNumber] = {
-        events: new HashMap(),
-        // @ts-expect-error initializing with empty object
-        meta: {},
-        styles: {}
-      }
-      return tracks[trackNumber]!
+
+    tracks[trackNumber] ??= {
+      events: new HashMap(),
+      // @ts-expect-error initializing with empty object
+      meta: {},
+      styles: {}
     }
+
+    return tracks[trackNumber]!
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -392,10 +408,13 @@ export default class Subtitles {
     const track = this._tracks.value[trackNumber]
     if (!track) return
 
-    await this.jassub.renderer.setTrack(track.meta.header.slice(0, -1))
+    lastSelectedTrack = track.meta
+
+    await this.jassub.renderer.setTrack(track.meta.header?.slice(0, -1) || defaultHeader)
     for (const subtitle of track.events) await this.jassub.renderer.createEvent(subtitle)
-    if (LANGUAGE_OVERRIDES[track.meta.language ?? '']) {
-      const name = LANGUAGE_OVERRIDES[track.meta.language ?? '']!
+    const lang = track.meta.language
+    if (LANGUAGE_OVERRIDES[lang]) {
+      const name = LANGUAGE_OVERRIDES[lang]
       await this.jassub.renderer.setDefaultFont(name)
     } else {
       await this.jassub.renderer.setDefaultFont('roboto medium')
@@ -421,22 +440,22 @@ export default class Subtitles {
         // timestamps
         match[1] = match[1]!.match(/.*[.,]\d{2}/)![0]
         match[2] = match[2]!.match(/.*[.,]\d{2}/)![0]
-        if (match[1]?.length === 9) {
+        if (match[1].length === 9) {
           match[1] = '0:' + match[1]
         } else {
-          if (match[1]?.[0] === '0') {
+          if (match[1][0] === '0') {
             match[1] = match[1].substring(1)
           }
         }
-        match[1]?.replace(',', '.')
-        if (match[2]?.length === 9) {
+        match[1].replace(',', '.')
+        if (match[2].length === 9) {
           match[2] = '0:' + match[2]
         } else {
-          if (match[2]?.[0] === '0') {
+          if (match[2][0] === '0') {
             match[2] = match[2].substring(1)
           }
         }
-        match[2]?.replace(',', '.')
+        match[2].replace(',', '.')
         // create array of all tags
         const matches = match[4]?.match(/<[^>]+>/g)
         if (matches) {

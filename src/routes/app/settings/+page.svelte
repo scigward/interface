@@ -15,13 +15,7 @@
   }
 </script>
 
-{#if ('queryLocalFonts' in self)}
-  <div class='font-weight-bold text-xl font-bold'>Subtitle Settings</div>
-  <SettingCard let:id title='Find Missing Subtitle Fonts' description="Automatically finds and loads fonts that are missing from a video's subtitles, using fonts installed on your OS.">
-    <Switch {id} bind:checked={$settings.missingFont} />
-  </SettingCard>
-{/if}
-
+<div class='font-weight-bold text-xl font-bold'>Subtitle Settings</div>
 <SettingCard title='Subtitle Render Resolution Limit' description="Max resolution to render subtitles at. If your resolution is higher than this setting the subtitles will be upscaled lineary. This will GREATLY improve rendering speeds for complex typesetting for slower devices. It's best to lower this on mobile devices which often have high pixel density where their effective resolution might be ~1440p while having small screens and slow processors.">
   <SingleCombo bind:value={$settings.subtitleRenderHeight} items={subtitleResolutions} class='w-32 shrink-0 border-input border' />
 </SettingCard>

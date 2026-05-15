@@ -1,6 +1,7 @@
 /* eslint-disable quote-props */
 export const languageCodes = {
   eng: 'English',
+  enm: 'English (Weeb)',
   jpn: 'Japanese',
   chi: 'Chinese',
   por: 'Portuguese',
