@@ -5,7 +5,7 @@
   import { Button } from '$lib/components/ui/button'
   import { SingleCombo } from '$lib/components/ui/combobox'
   import { Switch } from '$lib/components/ui/switch'
-  import { storage } from '$lib/modules/anilist/urql-client'
+  import urqlClient, { storage } from '$lib/modules/anilist/urql-client'
   import native from '$lib/modules/native'
   import { settings, SUPPORTS, debug } from '$lib/modules/settings'
   import { saveFile } from '$lib/utils'
@@ -68,6 +68,17 @@
     await storage.clear()
     native.restart()
   }
+  async function useInternalALAPI () {
+    try {
+      await urqlClient.token()
+      await native.unsafeUseInternalALAPI()
+    } catch (error) {
+      const err = error as Error
+      toast.error('Failed to use Internal API', {
+        description: err.message || 'Failed to use internal API.'
+      })
+    }
+  }
 </script>
 
 <div class='font-weight-bold text-xl font-bold'>App Settings</div>
@@ -107,6 +118,6 @@
   </SettingCard>
 
   <SettingCard title='Use Internal AniList API' description={"THIS IS VERY UNSAFE AND LIKELY BANNABLE!!!\nDO NOT USE THIS UNLESS YOU KNOW WHAT YOU'RE DOING.\n\nForces the app to use AniList's internal API instead of the public GraphQL API for the current session only. Can be used to debug issues such as CGNAT induced rate limits. This can cause issues in the UI, sync and other parts of the app."}>
-    <Button on:click={native.unsafeUseInternalALAPI} class='btn btn-primary font-bold'>Use Internal API</Button>
+    <Button on:click={useInternalALAPI} class='btn btn-primary font-bold'>Use Internal API</Button>
   </SettingCard>
 {/if}
