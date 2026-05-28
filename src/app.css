@@ -140,6 +140,11 @@
   }
 }
 
+/* stupid fix for a stupid chromium bug */
+canvas {
+  border-radius: inherit;
+}
+
 
 @font-face {
   font-family: "Twemoji";
