@@ -32,6 +32,7 @@ export default {
   torrentPath: '',
   angle: 'default' as 'default' | 'd3d11'| 'd3d9' | 'warp' | 'gl' | 'gles' | 'swiftshader' | 'vulkan' | 'metal',
   uiScale: 1,
+  titleType: 'ANILIST' as 'ANILIST' | 'ROMAJI' | 'ENGLISH' | 'NATIVE',
   enableExternal: false,
   playerPath: '',
   playerSeek: '2',

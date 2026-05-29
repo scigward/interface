@@ -39,6 +39,13 @@
   function saveScale () {
     $settings.uiScale = value[0]!
   }
+
+  const titleTypes = {
+    ANILIST: 'Anilist Account Preference',
+    ROMAJI: 'Romaji (Shingeki no Kyojin)',
+    ENGLISH: 'English (Attack on Titan)',
+    NATIVE: 'Native (進撃の巨人)'
+  } as const
 </script>
 
 {#if !SUPPORTS.isAndroid && !SUPPORTS.isIOS}
@@ -50,12 +57,15 @@
 <!-- <SettingCard let:id title='CSS Variables' description='Used for custom themes. Can change colors, sizes, spacing and more. Supports only variables.'>
   <Textarea class='form-control w-60 shrink-0 mw-full bg-dark' placeholder='--accent-color: #e5204c;' bind:value={$variables} {id} />
 </SettingCard> -->
-<div class='font-weight-bold text-xl font-bold'>Visibility Settings</div>
+<div class='font-weight-bold text-xl font-bold'>Appearance Settings</div>
 <SettingCard let:id title='Show Hentai' description={'Shows hentai content throughout the app. If disabled all hentai content will be hidden and not shown in search results, but shown if present in your list.\n\nThis is also an AniList account setting, so make sure it is enabled in account settings as well to avoid inconsistencies.'}>
   <Switch {id} bind:checked={$settings.showHentai} />
 </SettingCard>
 <SettingCard let:id title='Hide Spoilers' description='Hides potential spoilers such as titles, descriptions, episode images and ratings throughout the app.'>
   <Switch {id} bind:checked={$settings.hideSpoilers} />
+</SettingCard>
+<SettingCard title='Title Language' description='What language should anime titles be displayed in.'>
+  <SingleCombo bind:value={$settings.titleType} items={titleTypes} class='w-60 shrink-0 border-input border' />
 </SettingCard>
 <div class='font-weight-bold text-xl font-bold'>UI Settings</div>
 <SettingCard title='UI Scale' description='Change the zoom level of the interface.' let:id>

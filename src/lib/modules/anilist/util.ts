@@ -1,3 +1,5 @@
+import { settings } from '../settings'
+
 import type { ScheduleMedia } from './queries'
 import type { Media, MediaEdge } from './types'
 import type { ResultOf } from 'gql.tada'
@@ -29,8 +31,18 @@ export function coverSmall (media: Pick<Media, 'trailer' | 'bannerImage' | 'cove
   return media.coverImage?.medium ?? banner(media)
 }
 
+let titleType = 'ANILIST' as 'ANILIST' | 'ROMAJI' | 'ENGLISH' | 'NATIVE'
+
+settings.subscribe(s => {
+  titleType = s.titleType
+})
+
 export function title (media: Pick<Media, 'title'>): string {
-  return media.title?.userPreferred ?? 'TBA'
+  const _default = media.title?.userPreferred ?? 'TBA'
+  if (titleType === 'ANILIST') return _default
+  if (titleType === 'ENGLISH') return media.title?.english ?? _default
+  if (titleType === 'NATIVE') return media.title?.native ?? _default
+  return media.title?.romaji ?? _default
 }
 
 export function getParentForSpecial (media: Media) {
