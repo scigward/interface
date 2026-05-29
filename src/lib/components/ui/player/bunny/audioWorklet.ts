@@ -20,6 +20,9 @@ registerProcessor('audio-stream-processor', class AudioStreamProcessor extends A
     try {
       const out = outputs[0]!
       const blockSize = out[0]?.length ?? 128
+
+      for (let c = 0; c < out.length; c++) out[c]!.fill(0)
+
       let written = 0
 
       while (written < blockSize && this._chunks.length > 0) {
@@ -29,8 +32,7 @@ registerProcessor('audio-stream-processor', class AudioStreamProcessor extends A
 
         for (let c = 0; c < out.length; c++) {
           const src = chunk.channelData[c] ?? chunk.channelData[0]
-          if (!src) continue
-          out[c]!.set(src.subarray(this._offset, this._offset + n), written)
+          if (src) out[c]!.set(src.subarray(this._offset, this._offset + n), written)
         }
 
         written += n
@@ -42,12 +44,12 @@ registerProcessor('audio-stream-processor', class AudioStreamProcessor extends A
         }
       }
 
-      for (let c = 0; c < out.length; c++) out[c]!.fill(0, written)
+      if (this._samplesConsumed + written > this._samplesConsumed) {
+        this._samplesConsumed += written
 
-      this._samplesConsumed += written
-
-      if (this._samplesConsumed % this._reportInterval < blockSize) {
-        this.port.postMessage({ type: 'progress', samplesConsumed: this._samplesConsumed })
+        if (this._samplesConsumed % this._reportInterval < blockSize) {
+          this.port.postMessage({ type: 'progress', samplesConsumed: this._samplesConsumed })
+        }
       }
     } catch {}
 
