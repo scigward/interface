@@ -12,8 +12,8 @@ export const load: LayoutLoad = async ({ params, fetch }) => {
   const id = Number(params.id)
   const store = asyncStore(IDMedia, { id }, { requestPolicy: 'cache-first' })
 
-  let eps = await episodes(id, fetch)
   const info = client.animePage(id)
+  let eps = await episodes(id, fetch)
 
   if (!eps?.mappings?.anidb_id) {
     const anime = await store
