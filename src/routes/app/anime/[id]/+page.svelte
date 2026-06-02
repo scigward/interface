@@ -17,9 +17,9 @@
 
   $: anime = data.anime
 
-  $: media = $anime.Media!
-
   $: info = data.info
+
+  $: media = $info.data?.Media ?? $anime.Media!
 
   let expanded = false
 

@@ -22,40 +22,46 @@ const RelationMedia = gql(`
   }
 `)
 
+const EdgeMedia = gql(`
+  fragment EdgeMedia on Media @_unmask {
+    ...RelationMedia,
+    coverImage { extraLarge },
+    type,
+    episodes,
+    synonyms,
+    season,
+    seasonYear,
+    relations {
+      edges {
+        relationType(version:2),
+        node {
+          ...RelationMedia,
+          type,
+          coverImage { extraLarge }
+        }
+      }
+    },
+    startDate {
+      year,
+      month,
+      day
+    },
+    endDate {
+      year,
+      month,
+      day
+    }
+  }
+`, [RelationMedia])
+
 export const MediaEdgeFrag = gql(`
   fragment MediaEdgeFrag on MediaEdge @_unmask {
     relationType(version:2),
     node {
-      ...RelationMedia,
-      coverImage { extraLarge },
-      type,
-      episodes,
-      synonyms,
-      season,
-      seasonYear,
-      relations {
-        edges {
-          relationType(version:2),
-          node {
-            ...RelationMedia,
-            type,
-            coverImage { extraLarge }
-          }
-        }
-      },
-      startDate {
-        year,
-        month,
-        day
-      },
-      endDate {
-        year,
-        month,
-        day
-      }
+      ...EdgeMedia
     }
   }
-`, [RelationMedia])
+`, [EdgeMedia])
 
 export const FullMedia = gql(`
   fragment FullMedia on Media @_unmask {
@@ -423,23 +429,6 @@ export const Threads = gql(`
   }
 `, [ThreadFrag])
 
-export const Recommendations = gql(`
-  query Recommendations($id: Int!) {
-    Media(id: $id) {
-      id,
-      recommendations(sort: [RATING_DESC, ID], perPage: 24) {
-        nodes {
-          id,
-          rating,
-          mediaRecommendation {
-            ...FullMedia
-          }
-        }
-      }
-    }
-  }
-`, [FullMedia])
-
 export const Thread = gql(`
   query Thread($threadId: Int!) {
     Thread(id: $threadId) {
@@ -582,7 +571,10 @@ export const AnimePage = gql(`
           id,
           rating,
           mediaRecommendation {
-            ...FullMedia
+            mediaListEntry {
+              ...FullMediaList
+            },
+            ...EdgeMedia
           }
         }
       }
@@ -608,4 +600,4 @@ export const AnimePage = gql(`
       }
     }
   }
-`, [FullMedia, ThreadFrag, UserFrag])
+`, [FullMedia, ThreadFrag, UserFrag, EdgeMedia, FullMediaList])

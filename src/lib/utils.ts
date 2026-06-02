@@ -394,6 +394,16 @@ export function saveFile (data: string | Record<string, unknown>, name: string, 
 type Stores = Readable<any> | [Readable<any>, ...Array<Readable<any>>] | Array<Readable<any>>
 type StoresValues<T> = T extends Readable<infer U> ? U : { [K in keyof T]: T[K] extends Readable<infer U> ? U : never }
 
+// type _ConsumerKeys<T, F> = F extends (media: unknown) => unknown
+//   ? keyof Parameters<F>[0] & keyof T
+//   : never
+
+// export type PickByConsumer<T, F extends (media: unknown) => unknown, Extra extends keyof T = never> =
+//   Pick<T, _ConsumerKeys<T, F> | Extra>
+
+// export type PickMediaConsumer<F extends (media: unknown) => unknown, Extra extends keyof Media = never> =
+//   PickByConsumer<Media, F, Extra>
+
 export function derivedArray<S extends Stores, T>(stores: S, fn: (values: StoresValues<S>) => T, initialValue?: T): Readable<T>
 export function derivedArray<S extends Stores, T> (stores: S, fn: (values: StoresValues<S>, set: (value: T) => void, update: (fn: Updater<T>) => void) => Unsubscriber | undefined, initialValue?: T): Readable<T> {
   let previous = initialValue

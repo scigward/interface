@@ -16,6 +16,10 @@
 
   export let media: Media
 
+  let hoverable = true
+
+  export { hoverable as hover }
+
   let hidden = true
 
   function onclick () {
@@ -29,7 +33,7 @@
 </script>
 
 <div class='text-white cursor-pointer shrink-0 relative pointer-events-auto active:z-[10] focus-visible:z-[10]' use:hover={[onclick, onhover]}>
-  {#if !hidden}
+  {#if !hidden && hoverable}
     <PreviewCard {media} />
   {/if}
   <div class='item w-[11.5rem] h-[323px] flex flex-col p-4 [content-visibility:auto] [contain-intrinsic-size:auto_9.5rem_auto_291px]'>

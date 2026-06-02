@@ -4,11 +4,11 @@
 </script>
 
 <script lang='ts'>
-  import type { client } from '$lib/modules/anilist'
+  import type { client, Media } from '$lib/modules/anilist'
 
   import { SkeletonCard, SmallCard } from '$lib/components/ui/cards'
 
-  export let query: ReturnType<typeof client.recommendations>
+  export let query: ReturnType<typeof client.animePage>
 
   $: paused = query.isPaused$
 
@@ -22,6 +22,10 @@
     observer.observe(element)
 
     return { destroy () { observer.unobserve(element) } }
+  }
+
+  function unsafeIsMedia (media: unknown): media is Media {
+    return !!media
   }
 </script>
 
@@ -50,8 +54,8 @@
   {#if $query.data.Media?.recommendations?.nodes}
     {#each $query.data.Media.recommendations.nodes as media, i (media?.id ?? '#' + i)}
       <div animate:flip={{ duration: 400, easing: quartInOut }}>
-        {#if media?.mediaRecommendation}
-          <SmallCard media={media.mediaRecommendation} />
+        {#if unsafeIsMedia(media?.mediaRecommendation)}
+          <SmallCard media={media.mediaRecommendation} hover={false} />
         {/if}
       </div>
     {:else}

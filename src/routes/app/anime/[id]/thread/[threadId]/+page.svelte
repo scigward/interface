@@ -20,8 +20,9 @@
   $: threadStore = data.thread
   $: thread = $threadStore.Thread!
 
+  $: info = data.info
   $: anime = data.anime
-  $: media = $anime.Media!
+  $: media = $info.data?.Media ?? $anime.Media!
 
   const viewer = client.client.viewer
 </script>

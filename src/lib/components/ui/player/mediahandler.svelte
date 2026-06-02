@@ -7,7 +7,6 @@
 </script>
 
 <script lang='ts'>
-
   import Castplayer, { activeDisplay } from './castplayer.svelte'
   import Externalplayer from './externalplayer.svelte'
   import Player from './player.svelte'

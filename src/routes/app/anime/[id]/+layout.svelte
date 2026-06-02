@@ -27,8 +27,8 @@
   export let data: LayoutData
 
   $: anime = data.anime
-
-  $: media = $anime.Media!
+  $: info = data.info
+  $: media = $info.data?.Media ?? $anime.Media!
 
   $: bannerSrc.value = media
   hideBanner.value = false
@@ -48,7 +48,6 @@
 
   const viewer = client.client.viewer
 
-  $: info = data.info
   $: followerEntries = ($viewer?.viewer?.id && $info.data?.following?.mediaList?.filter(e => e?.user?.id !== $viewer.viewer?.id)) || []
 
   $: nativeTitle = media.title?.native ?? media.title?.romaji ?? ''
