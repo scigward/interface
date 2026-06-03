@@ -115,7 +115,7 @@ const config = {
       mode: 'hash',
       directives: {
         'default-src': ['self'],
-        'script-src': ['self', 'wasm-unsafe-eval', 'blob:'],
+        'script-src': ['self', 'wasm-unsafe-eval', 'blob:', 'trusted-types-eval'],
         'style-src': ['self', 'unsafe-inline'],
         'img-src': ['self', 'blob:', 'https:', 'data:'],
         'font-src': ['self'],
