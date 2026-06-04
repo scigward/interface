@@ -76,7 +76,7 @@
     <aside class={cn('lg:grow lg:max-w-60 flex flex-col sticky top-0 w-full bg-black z-20 h-full', !current && 'hidden md:flex')}>
       <SettingsNav {items} />
       <div class='mt-auto text-xs text-muted-foreground px-4 sm:px-2 py-3 md:py-5 flex-row lg:flex-col font-light gap-0.5 gap-x-4 flex-wrap hidden sm:flex'>
-        <div>WebTorrent v2.8.4</div>
+        <div>WebTorrent v3.0.16</div>
       </div>
     </aside>
     <div class='w-full lg:max-w-6xl flex-grow pb-2 min-w-0'>

@@ -1,7 +1,7 @@
 <script lang='ts'>
   import type { ExtensionConfig } from '$lib/modules/extensions'
 
-  import { MANIFEST_VERSION } from '$lib/modules/extensions'
+  import { MANIFEST_VERSION } from '$lib/modules/extensions/storage'
   import { codeToEmoji } from '$lib/utils'
 
   export let config: ExtensionConfig

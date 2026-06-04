@@ -10,6 +10,7 @@
   import { onNavigate } from '$app/navigation'
   // import Backplate from '$lib/components/Backplate.svelte'
   import Online from '$lib/components/Online.svelte'
+  import InstallPrompt, { extensionInstalURL } from '$lib/components/ui/extensions/ExtensionInstallPrompt.svelte'
   import { Menubar } from '$lib/components/ui/menubar'
   import { Toaster } from '$lib/components/ui/sonner'
   import native from '$lib/modules/native'
@@ -43,6 +44,9 @@
 
   $: scale = SUPPORTS.isAndroidTV ? $settings.uiScale / devicePixelRatio : (SUPPORTS.isAndroid || SUPPORTS.isIOS) ? $settings.uiScale : 1
 
+  native.navigate(({ target, value }) => {
+    if (target === 'extensions') return extensionInstalURL.set(value ?? '')
+  })
 </script>
 
 <svelte:head>
@@ -55,6 +59,9 @@
 
   <Menubar />
   <Online />
+  {#if $extensionInstalURL}
+    <InstallPrompt />
+  {/if}
   <slot />
 </div>
 <!-- {#if !SUPPORTS.isAndroid}

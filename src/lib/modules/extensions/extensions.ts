@@ -58,8 +58,6 @@ export class ExtensionError extends Error {
   }
 }
 
-export const MANIFEST_VERSION = 2
-
 export type StreamedTorrentResult = TorrentResult & { extension: Set<string>, parseObject: AnitomyResult }
 
 // TODO: these 2 exports need to be moved to a better place

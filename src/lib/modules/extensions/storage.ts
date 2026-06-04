@@ -27,6 +27,8 @@ type ExtensionsOptions = {
   }
 }
 
+export const MANIFEST_VERSION = 2
+
 // Usage:
 export const savedConfigs = persisted<SavedExtensions>('extensions', {})
 export const savedOptions = persisted<ExtensionsOptions>('extensionoptions', {})

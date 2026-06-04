@@ -2,10 +2,6 @@ import SUPPORTS from './settings/supports'
 
 import type { AuthResponse, Native, TorrentInfo } from 'native'
 
-import { sleep } from '$lib/utils'
-
-const rnd = (range = 100) => Math.floor(Math.random() * range)
-
 const dummyFiles = [
   {
     name: 'AmebkuUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU.webm',
@@ -110,7 +106,7 @@ export default Object.assign<Native, Partial<Native>>({
   close: async () => window.close(),
   checkUpdate: async () => undefined,
   updateAndRestart: async () => undefined,
-  updateReady: () => sleep(rnd(10_000)),
+  updateReady: async () => undefined,
   toggleDiscordDetails: async () => undefined,
   unsafeUseInternalALAPI: async () => undefined,
   setMediaSession: async (metadata) => { navigator.mediaSession.metadata = new MediaMetadata({ title: metadata.title, artist: metadata.description, artwork: [{ src: metadata.image }] }) },
