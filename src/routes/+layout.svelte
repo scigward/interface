@@ -13,6 +13,7 @@
   import InstallPrompt, { extensionInstalURL } from '$lib/components/ui/extensions/ExtensionInstallPrompt.svelte'
   import { Menubar } from '$lib/components/ui/menubar'
   import { Toaster } from '$lib/components/ui/sonner'
+  import { sanitizeExtensionUrl } from '$lib/modules/extensions/storage'
   import native from '$lib/modules/native'
   import { inputType } from '$lib/modules/navigate'
   import { settings, SUPPORTS } from '$lib/modules/settings'
@@ -45,7 +46,8 @@
   $: scale = SUPPORTS.isAndroidTV ? $settings.uiScale / devicePixelRatio : (SUPPORTS.isAndroid || SUPPORTS.isIOS) ? $settings.uiScale : 1
 
   native.navigate(({ target, value }) => {
-    if (target === 'extensions') return extensionInstalURL.set(value ?? '')
+    if (target !== 'extensions' || !value) return
+    extensionInstalURL.set(sanitizeExtensionUrl(new URL(value, 'http://localhost').searchParams.get('url') ?? value))
   })
 </script>
 

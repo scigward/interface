@@ -12,8 +12,7 @@
     schedule: 'schedule',
     anime: 'anime',
     w2g: 'w2g',
-    debug: 'debug',
-    extensions: 'extensions'
+    debug: 'debug'
   } as const
 
   native.navigate(({ target, value }) => {
