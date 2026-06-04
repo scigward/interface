@@ -32,18 +32,23 @@
     }, displayThresholdMs)
   })
 
-  onNavigate((navigation) => {
-    if (!document.startViewTransition || (SUPPORTS.isIOS && navigation.delta != null)) return
+  onNavigate(({ to, complete, delta, from }) => {
+    if (
+      !document.startViewTransition ||
+      (SUPPORTS.isIOS && delta != null) || // iOS has their own animations for back/forward navigation that conflict with view transitions, sasuga Apple
+      fullscreenElement || // chrome can hang when trying to do view transitions while in fullscreen
+      (to?.route.id === '/app/player' && SUPPORTS.isMobile) // same as above, but only on mobile since only it forces fullscreen
+    ) return
 
     return new Promise((resolve) => {
-      document.startViewTransition(async () => {
+      document.startViewTransition(() => {
         resolve()
-        await navigation.complete
+        return complete
       })
     })
   })
 
-  $: scale = SUPPORTS.isAndroidTV ? $settings.uiScale / devicePixelRatio : (SUPPORTS.isAndroid || SUPPORTS.isIOS) ? $settings.uiScale : 1
+  $: scale = SUPPORTS.isAndroidTV ? $settings.uiScale / devicePixelRatio : SUPPORTS.isMobile ? $settings.uiScale : 1
 
   native.navigate(({ target, value }) => {
     if (target !== 'extensions' || !value) return
@@ -52,7 +57,8 @@
 
   let fullscreenElement: Element | undefined
 
-  $: if (!fullscreenElement) screen.orientation.lock?.('portrait')
+  // horrific hack, but on iPadOS, disabling insets causes lock to be RESPECTED, even tho spec says on Tablets it should be ignored, re-enabling insets correcly ignores lock!
+  $: if (!fullscreenElement && !SUPPORTS.isIPad) screen.orientation.lock?.('portrait').catch(() => {})
 </script>
 
 <svelte:head>

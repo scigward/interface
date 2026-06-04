@@ -44,7 +44,7 @@
   import type { TorrentFile } from 'native'
   import type { SvelteMediaTimeRange } from 'svelte/elements'
 
-  import { beforeNavigate, goto } from '$app/navigation'
+  import { goto, onNavigate } from '$app/navigation'
   import { page } from '$app/stores'
   import PictureInPictureOff from '$lib/components/icons/PictureInPicture.svelte'
   import PictureInPictureExit from '$lib/components/icons/PictureInPictureExit.svelte'
@@ -90,7 +90,7 @@
   let readyState = 0
   $: safeduration = isFinite(duration) ? duration : currentTime
   const volume = persisted('volume', 1)
-  $: exponentialVolume = (SUPPORTS.isAndroid || SUPPORTS.isIOS) ? 1 : $volume ** 3
+  $: exponentialVolume = SUPPORTS.isMobile ? 1 : $volume ** 3
   let muted = false
 
   const timeFormat = persisted('timeFormat', 'positive')
@@ -179,11 +179,23 @@
   function fullscreen () {
     return fullscreenElement ? document.exitFullscreen() : document.getElementById('episodeListTarget')!.requestFullscreen({ navigationUI: 'hide' })
   }
-  $: if (fullscreenElement) screen.orientation.lock?.('landscape')
+  $: if (fullscreenElement) screen.orientation.lock?.('landscape').catch(() => {})
 
-  beforeNavigate(({ to }) => {
-    if (fullscreenElement && to?.route.id !== '/app/player') fullscreen()
+  // return the promises for cleaner UI transitions while navigating
+  onNavigate(({ to }) => {
+    if (to?.route.id === '/app/player') {
+      // force fullscreen on mobile
+      if (SUPPORTS.isMobile) return fullscreen()
+    } else {
+      // exit fullscreen when navigating away from player
+      if (fullscreenElement) return fullscreen()
+    }
   })
+
+  // exiting fullscreen on mobile navigates back since its a "back" gesture
+  function checkMobileFullscreen () {
+    if (!document.fullscreenElement && SUPPORTS.isMobile && !isMiniplayer) history.back()
+  }
 
   function checkAudio () {
     if (video.audioTracks) {
@@ -763,7 +775,7 @@
   let clientHeight = 0
 </script>
 
-<svelte:document bind:fullscreenElement bind:visibilityState use:holdToFF={'key'} />
+<svelte:document bind:fullscreenElement bind:visibilityState use:holdToFF={'key'} on:fullscreenchange={checkMobileFullscreen} />
 
 <div class='size-full relative content-center bg-black overflow-clip text-left touch-none'
   class:fitWidth class:seeking class:pip={pictureInPictureElement} bind:this={wrapper}
@@ -876,7 +888,7 @@
           Subtitle delay: {subtitleDelay} sec
         </div>
       {/if}
-      {#if $settings.minimalPlayerUI || SUPPORTS.isAndroid || SUPPORTS.isIOS}
+      {#if $settings.minimalPlayerUI || SUPPORTS.isMobile}
         <Options {wrapper} bind:open bind:openPath {video} {seekTo} screenshot={ss} {selectAudio} {selectVideo} {fullscreen} chapters={$chapters} {subtitles} {videoFiles} {selectFile} {pip} bind:playbackRate={$playbackRate} bind:subtitleDelay id='player-options-button-top'
           class='inline-flex p-3 size-12 absolute z-[1] top-4 right-4 bg-black/20 pointer-events-auto transition-opacity delay-150 select:opacity-100 {immersed && 'opacity-0'}' />
       {/if}
@@ -931,17 +943,6 @@
             {/if}
           </div>
         </div>
-        <Button class='relative animated-icon shrink-0 -mb-2 p-0 size-8 {(SUPPORTS.isAndroid || SUPPORTS.isIOS) && !SUPPORTS.isAndroidTV ? 'flex' : 'mobile:flex hidden'}' variant='ghost' on:click={fullscreen} on:keydown={keywrap(fullscreen)} data-up='#player-seekbar'>
-          {#if fullscreenElement}
-            <div transition:scaleBlurFade class='absolute'>
-              <Minimize size='16px' class='p-0.5' strokeWidth='2.5' />
-            </div>
-          {:else}
-            <div transition:scaleBlurFade class='absolute'>
-              <Maximize size='16px' class='p-0.5' strokeWidth='2.5' />
-            </div>
-          {/if}
-        </Button>
       </div>
       <Seekbar {duration} {currentTime} buffer={buffer / duration * 100} chapters={$chapters} bind:seeking bind:seek={seekPercent} on:seeked={finishSeek} on:seeking={startSeek} {thumbnailer} on:keydown={seekBarKey} on:dblclick={fullscreen} />
       {#if !$settings.minimalPlayerUI && !SUPPORTS.isAndroid && !SUPPORTS.isIOS}

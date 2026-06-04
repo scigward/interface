@@ -21,7 +21,7 @@ export default {
   torrentStreamedDownload: true,
   dhtPort: 0,
   maxConns: 50,
-  subtitleRenderHeight: (SUPPORTS.isAndroid || SUPPORTS.isIOS) ? '720' : '0' as keyof typeof subtitleResolutions,
+  subtitleRenderHeight: SUPPORTS.isMobile ? '720' : '0' as keyof typeof subtitleResolutions,
   subtitleLanguage: 'eng' as keyof typeof languageCodes,
   audioLanguage: 'jpn' as keyof typeof languageCodes,
   enableDoH: false,
