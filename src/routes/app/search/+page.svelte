@@ -4,7 +4,7 @@
   import MagnifyingGlass from 'svelte-radix/MagnifyingGlass.svelte'
   import { toast } from 'svelte-sonner'
 
-  import { genres, years, seasons, formats, status, sort, onlist } from './values'
+  import { genres, genresSet, tags, years, seasons, formats, status, sort, onlist } from './values'
 
   import type { Search } from '$lib/modules/anilist/queries'
   import type { VariablesOf } from 'gql.tada'
@@ -21,6 +21,11 @@
   import { client } from '$lib/modules/anilist'
   import { click, dragScroll } from '$lib/modules/navigate'
   import { breakpoints, cn, debounce, sleep, traceAnime, type TraceAnime } from '$lib/utils'
+
+  const groups = [
+    { group: 'Genres', items: genres },
+    { group: 'Tags', items: tags }
+  ]
 
   // util
 
@@ -71,7 +76,10 @@
       ids: variables.ids,
       name: variables.search ?? '',
       onList: onlist.filter(s => s.value === (variables.onList?.toString() ?? 'null')) as format[],
-      genres: genres.filter(g => (variables.genre ?? []).includes(g.value)) as format[],
+      genres: [
+        ...genres.filter(g => (variables.genre ?? []).includes(g.value)),
+        ...tags.filter(t => (variables.tag ?? []).includes(t.value))
+      ] as format[],
       years: years.filter(y => y.value === ('' + (variables.seasonYear ?? ''))) as format[],
       seasons: seasons.filter(s => s.value === (variables.season ?? '')) as format[],
       formats: formats.filter(f => (variables.format ?? []).includes(f.value)) as format[],
@@ -128,12 +136,16 @@
   }
 
   function searchQuery (filter: Partial<typeof search>, page: number) {
+    const genre = filter.genres?.filter(s => genresSet.has(s.value)).map(g => g.value)
+    const tag = filter.genres?.filter(s => !genresSet.has(s.value)).map(g => g.value)
+
     const search = {
       page,
       ids: filter.ids,
       search: filter.name,
       onList: filter.onList?.[0]?.value === 'true' ? true : filter.onList?.[0]?.value === 'false' ? false : undefined,
-      genre: filter.genres?.map(g => g.value),
+      genre: genre?.length ? genre : undefined,
+      tag: tag?.length ? tag : undefined,
       seasonYear: filter.years?.length ? parseInt(filter.years[0]!.value) : undefined,
       season: filter.seasons?.[0]!.value as 'WINTER' | 'SPRING' | 'SUMMER' | 'FALL' | undefined,
       format: filter.formats?.map(f => f.value) as Array<'MUSIC' | 'MANGA' | 'TV' | 'TV_SHORT' | 'MOVIE' | 'SPECIAL' | 'OVA' | 'ONA' | 'NOVEL' | 'ONE_SHOT'>,
@@ -276,7 +288,7 @@
             <div class='text-xl font-bold mb-1 ml-1'>
               Genres
             </div>
-            <ComboBox items={genres} multiple={true} bind:value={search.genres} class='w-full' />
+            <ComboBox {groups} multiple={true} bind:value={search.genres} class='w-full' />
           </div>
           <div class='grid items-center min-w-44 flex-1 md:basis-auto md:w-1/4 p-2'>
             <div class='text-xl font-bold mb-1 ml-1'>

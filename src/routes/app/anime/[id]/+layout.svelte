@@ -174,15 +174,15 @@
         {@const spoiler = !!tag?.isMediaSpoiler || !!tag?.isGeneralSpoiler}
         {@const underPoweredSpoiler = spoiler && SUPPORTS.isUnderPowered}
         {@const hide = tag?.isAdult && !$settings.showHentai}
-        {#if !hide}
-          <div class={cn(
-            'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium bg-secondary/40 text-muted-foreground shadow-sm px-4 py-2 h-7 text-nowrap border-2 border-dashed border-secondary',
-            underPoweredSpoiler && 'transition-colors text-transparent select:text-muted-foreground'
-          )}>
+        {#if !hide && tag}
+          <Button variant='secondary' class={cn(
+            'select:!text-custom h-7 text-nowrap bg-secondary/40 text-muted-foreground shadow-sm border-2 border-dashed border-secondary',
+            underPoweredSpoiler && 'text-transparent select:text-muted-foreground'
+          )} on:click={() => goto('/app/search', { state: { search: { tag: [tag.name] } } })}>
             <span class={cn(spoiler && !underPoweredSpoiler && 'blur-[6px] select:blur-0 transition-[filter]')}>
-              {tag?.name}
+              {tag.name}
             </span>
-          </div>
+          </Button>
         {/if}
       {/each}
     </div>

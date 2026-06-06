@@ -77,6 +77,8 @@ export const genres = [
   }
 ] as const
 
+export const genresSet = new Set<string>(genres.map(g => g.value))
+
 const currentYear = new Date().getFullYear()
 export const years = Array.from({ length: currentYear - 1940 + 2 }, (_, i) => '' + (currentYear + 2 - i)).map(value => ({ value, label: value }))
 

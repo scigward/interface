@@ -246,6 +246,7 @@ export const extensions = new class Extensions {
       const parseObjects = await anitomyscript(results.map(({ title }) => title))
       parseObjects.forEach((parseObject, index) => {
         results[index]!.parseObject = parseObject
+        results[index]!.hash = results[index]!.hash.toLowerCase()
       })
       return results
     }
