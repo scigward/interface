@@ -28,7 +28,6 @@
   }
 
   $: isHome = $page.route.id === '/app/home'
-  $: isPlayer = $page.route.id === '/app/player'
 </script>
 
 <svelte:window use:outsideclick />
