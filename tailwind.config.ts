@@ -46,6 +46,21 @@ const config: Config = {
           type: 'any'
         }
       )
+      api.matchUtilities(
+        {
+          'backdrop-fade': (value) => ({
+            '-webkit-backdrop-filter': `blur(${value})`,
+            'backdrop-filter': `blur(${value})`,
+            '-webkit-mask-image':
+  'linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%), linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
+            '-webkit-mask-composite': 'source-in',
+            'mask-image':
+  'linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%), linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
+            'mask-composite': 'intersect'
+          })
+        },
+        { values: { none: '0', sm: '4px', md: '8px', lg: '12px', xl: '24px', '2xl': '40px', '3xl': '64px' } }
+      )
     })
   ],
   darkMode: ['class'],

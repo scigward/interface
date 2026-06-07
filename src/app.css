@@ -155,8 +155,17 @@ canvas {
   src: url("/twemoji-subset.woff2") format("woff2");
 }
 
+@font-face {
+  font-family: "Excalifont Regular";
+  src: url("/Excalifont-Regular-subset.woff2") format("woff2");
+}
+
 .font-twemoji {
   font-family: 'Twemoji';
+}
+
+.font-excalifont {
+  font-family: 'Excalifont Regular';
 }
 
 ::selection {

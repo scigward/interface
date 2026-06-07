@@ -1,6 +1,6 @@
 <script lang='ts'>
   import VolumeX from 'lucide-svelte/icons/volume-x'
-  import { createEventDispatcher, onDestroy } from 'svelte'
+  import { createEventDispatcher, onDestroy, tick } from 'svelte'
 
   import Volume2 from '$lib/components/icons/Volume2.svelte'
   import { click } from '$lib/modules/navigate'
@@ -9,7 +9,7 @@
 
   const dispatch = createEventDispatcher<{hide: boolean}>()
 
-  function ytMessage (e: MessageEvent) {
+  async function ytMessage (e: MessageEvent) {
     if (e.origin !== 'https://www.youtube-nocookie.com') return
     clearInterval(timeout)
     const json = JSON.parse(e.data as string) as { event: string, info: {videoData: {isPlayable: boolean}, playerState?: number} }
@@ -19,9 +19,18 @@
       dispatch('hide', true)
     }
 
-    if (json.event === 'infoDelivery' && json.info.playerState === 1) {
-      hide = false
-      dispatch('hide', false)
+    if (json.event === 'infoDelivery') {
+      if (json.info.playerState === 1) {
+        hide = false
+        dispatch('hide', false)
+      } else if (json.info.playerState === 0) {
+        // youtube started being annoying with buttons, playlist is required for loop to work, but it force shows extra buttons
+        // so we loop the video manually
+        const last = id
+        id = ''
+        await tick()
+        id = last
+      }
     }
   }
 
@@ -58,12 +67,11 @@
     autoplay: '1',
     controls: '0',
     disablekb: '1',
-    loop: '1',
-    playlist: id,
     cc_lang_pref: 'ja',
     rel: '0',
     playsinline: '1',
-    mute: '1'
+    fs: '0',
+    mute: muted ? '1' : '0'
   })
 </script>
 

@@ -10,6 +10,7 @@
   import EntryEditor from '$lib/components/EntryEditor.svelte'
   import Anilist from '$lib/components/icons/Anilist.svelte'
   import MyAnimeList from '$lib/components/icons/MyAnimeList.svelte'
+  import SquiggleArrow from '$lib/components/icons/SquiggleArrow.svelte'
   import { Clapperboard } from '$lib/components/icons/animated'
   import { bannerSrc, hideBanner } from '$lib/components/ui/banner'
   import { Button } from '$lib/components/ui/button'
@@ -17,18 +18,26 @@
   import * as Dialog from '$lib/components/ui/dialog'
   import { Load } from '$lib/components/ui/img'
   import { Profile } from '$lib/components/ui/profile'
-  import { cover, desc, duration, format, season, status, title, getBGColorForRating, client } from '$lib/modules/anilist'
+  import * as Tooltip from '$lib/components/ui/tooltip'
+  import { cover, desc, duration, format, season, status, title, getBGColorForRating, client, episodes } from '$lib/modules/anilist'
+  import { minutes } from '$lib/modules/anilist/trailer'
   import { list, of } from '$lib/modules/auth'
   import native from '$lib/modules/native'
   import { dragScroll } from '$lib/modules/navigate'
   import { settings, SUPPORTS } from '$lib/modules/settings'
-  import { cn, colors } from '$lib/utils'
+  import { breakpoints, cn, colors } from '$lib/utils'
 
   export let data: LayoutData
 
   $: anime = data.anime
   $: info = data.info
   $: media = $info.data?.Media ?? $anime.Media!
+
+  $: trailerId = media.trailer?.id
+  $: trailerMinutes = minutes(trailerId)
+  $: count = episodes(media)
+  $: trailerIsMedia = (count === 1 || !count) && media.duration && $trailerMinutes === media.duration
+  let open = false
 
   $: bannerSrc.value = media
   hideBanner.value = false
@@ -133,15 +142,29 @@
           <Check class='size-4' />
         </div>
       </TransitionButton>
-      {#if media.trailer?.id}
-        <Dialog.Root portal='#root'>
+      {#if trailerId}
+        <Dialog.Root portal='#root' bind:open>
           <Dialog.Trigger let:builder asChild>
-            <Button size='icon' variant='secondary' class='hidden min-[380px]:flex select:!text-custom animated-icon' builders={[builder]}>
-              <Clapperboard class='size-4' />
-            </Button>
+            {#if trailerIsMedia}
+              <Tooltip.Root open={true}>
+                <Tooltip.Trigger let:builder={builder2} tabindex={-1}>
+                  <Button builders={[builder, builder2]} size='icon' variant='secondary' class='hidden min-[380px]:flex select:!text-custom animated-icon'>
+                    <Clapperboard class='size-4' />
+                  </Button>
+                </Tooltip.Trigger>
+                <Tooltip.Content side='bottom' align={$breakpoints.md ? 'start' : 'end'} class='hidden min-[380px]:flex bg-transparent items-center p-0 backdrop-fade-[1.5px] md:pe-4 md:ps-0 ps-4 text-center flex-row-reverse md:flex-row'>
+                  <SquiggleArrow class='h-14 w-20 rotate-[230deg] md:rotate-[130deg] md:me-2 md:ms-0 ms-2 -scale-x-100 md:scale-x-100' />
+                  <span class='text-primary text-base font-excalifont rotate-3 md:-rotate-3'>Also available<br />on YouTube!</span>
+                </Tooltip.Content>
+              </Tooltip.Root>
+            {:else}
+              <Button size='icon' variant='secondary' class='hidden min-[380px]:flex select:!text-custom animated-icon' builders={[builder]}>
+                <Clapperboard class='size-4' />
+              </Button>
+            {/if}
           </Dialog.Trigger>
           <Dialog.Content class='flex justify-center max-h-[80%] h-full max-w-max'>
-            <iframe credentialless class='h-full max-w-full aspect-video max-h-full rounded' src={`https://www.youtube-nocookie.com/embed/${media.trailer.id}?autoplay=1`} frameborder='0' allow='autoplay' allowfullscreen title={media.title?.userPreferred ?? ''} />
+            <iframe credentialless class='h-full max-w-full aspect-video max-h-full rounded' src={`https://www.youtube-nocookie.com/embed/${trailerId}?autoplay=1&cc_lang_pref=ja&rel=0`} frameborder='0' allow='autoplay' allowfullscreen title={media.title?.userPreferred ?? ''} />
           </Dialog.Content>
         </Dialog.Root>
       {/if}
