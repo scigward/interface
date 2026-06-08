@@ -901,7 +901,7 @@
           <Button class='p-3 size-10 pointer-events-auto rounded-[50%] bg-black/20' variant='ghost' disabled={!prev} on:click={() => prev?.()}>
             <SkipBack fill='currentColor' strokeWidth='1' />
           </Button>
-          <Button class='p-2.5 size-12 pointer-events-auto rounded-[50%] bg-black/20' variant='ghost' on:click={playPause}>
+          <Button class={cn('p-2.5 size-12 pointer-events-auto rounded-[50%] bg-black/20', buffering && 'opacity-10')} variant='ghost' on:click={playPause}>
             {#if paused}
               <Play fill='currentColor' class='p-0.5' />
             {:else}
