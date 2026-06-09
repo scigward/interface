@@ -4,13 +4,13 @@
 
 <div class='p-4 shrink-0'>
   <div class='item w-[9.5rem] flex flex-col'>
-    <div class='h-[13.5rem] bg-black rounded w-full'>
+    <div class='h-[13.5rem] bg-background rounded w-full'>
       <div class='bg-primary/5 size-full rounded' class:animate-pulse={animate} />
     </div>
-    <div class='mt-4 bg-black rounded h-2 w-28'>
+    <div class='mt-4 bg-background rounded h-2 w-28'>
       <div class='bg-primary/5 size-full rounded' class:animate-pulse={animate} />
     </div>
-    <div class='mt-2 bg-black rounded h-2 w-20'>
+    <div class='mt-2 bg-background rounded h-2 w-20'>
       <div class='bg-primary/5 size-full rounded' class:animate-pulse={animate} />
     </div>
   </div>

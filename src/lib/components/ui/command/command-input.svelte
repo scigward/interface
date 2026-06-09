@@ -15,7 +15,7 @@
   <MagnifyingGlass class='mr-2 h-4 w-4 shrink-0 opacity-50 absolute left-3' />
   <CommandPrimitive.Input
     class={cn(
-      'placeholder:text-muted-foreground flex h-10 w-full rounded-sm bg-transparent py-3 text-sm outline-none disabled:cursor-not-allowed disabled:opacity-50 pl-9 pr-3 overflow-hidden ![border-image:none]',
+      'placeholder:text-muted-foreground flex h-10 w-full rounded-sm bg-muted py-3 text-sm outline-none disabled:cursor-not-allowed disabled:opacity-50 pl-9 pr-3 overflow-hidden ![border-image:none] select:bg-accent',
       className
     )}
     {...$$restProps}

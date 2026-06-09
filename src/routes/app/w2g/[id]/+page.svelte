@@ -83,7 +83,7 @@
         </TransitionButton>
         <Textarea
           bind:value={message}
-          class='h-auto px-3 w-full resize-none min-h-0 border-0 bg-background select:bg-accent select:text-accent-foreground'
+          class='h-auto px-3 w-full resize-none min-h-0 border-0 select:bg-accent select:text-accent-foreground'
           {rows}
           autocomplete='off'
           maxlength={256}

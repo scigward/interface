@@ -33,7 +33,7 @@
   </Button>
   <div class='text-[20px] md:text-2xl font-bold line-clamp-1'>{thread.title ?? 'No thread title...'}</div>
 </div>
-<div class='rounded-md bg-neutral-950 text-secondary-foreground flex w-full mb-10 py-6 px-8 flex-col'>
+<div class='rounded-md bg-muted text-secondary-foreground flex w-full mb-10 py-6 px-8 flex-col'>
   <div class='flex w-full justify-between text-xl'>
     <div class='font-bold mb-2 line-clamp-1 flex leading-none items-center'>
       {#if thread.user}

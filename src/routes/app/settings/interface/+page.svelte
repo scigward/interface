@@ -114,7 +114,7 @@
 {/if}
 
 <Dialog.Root portal='#root' bind:open={dialogOpen}>
-  <Dialog.Content class='max-w-md w-full bg-black'>
+  <Dialog.Content class='max-w-md w-full bg-background'>
     <Dialog.Header>
       <Dialog.Title class='font-weight-bold font-bold'>Keep this UI scale?</Dialog.Title>
       <Dialog.Description>

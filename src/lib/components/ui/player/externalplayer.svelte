@@ -60,21 +60,21 @@
   }
 </script>
 
-<div class='flex-col w-full flex-shrink-0 relative overflow-clip flex justify-center items-center bg-black {isMiniplayer ? 'aspect-video cursor-pointer' : 'h-full' } px-8' on:click={openPlayer} bind:this={wrapper}>
+<div class='flex-col w-full flex-shrink-0 relative overflow-clip flex justify-center items-center bg-background {isMiniplayer ? 'aspect-video cursor-pointer' : 'h-full' } px-8' on:click={openPlayer} bind:this={wrapper}>
   <div class='flex flex-col gap-2 text-left' class:max-w-[320px]={!isMiniplayer}>
-    <div class='text-white text-2xl font-bold leading-none line-clamp-1 mb-2'>Now Watching</div>
+    <div class='text-primary text-2xl font-bold leading-none line-clamp-1 mb-2'>Now Watching</div>
     <EpisodesModal portal={wrapper} {mediaInfo} />
     {#await player}
       <div class='ml-auto self-end text-sm leading-none font-light text-nowrap mt-3'>{toTS(Math.min($elapsed, duration))} / {toTS(duration)}</div>
       <div class='relative w-full h-1 flex items-center justify-center overflow-clip rounded-[2px]'>
         <div class='bg-[rgba(217,217,217,0.4)] absolute left-0 w-full h-0.5' />
-        <div class='bg-white absolute w-full left-0 h-0.5 transform-gpu' style:--tw-translate-x='{clamp($elapsed / duration * 100) - 100}%' />
+        <div class='bg-primary absolute w-full left-0 h-0.5 transform-gpu' style:--tw-translate-x='{clamp($elapsed / duration * 100) - 100}%' />
       </div>
     {:then _}
       <div class='ml-auto self-end text-sm leading-none font-light text-nowrap mt-3'>{toTS(Math.min((Date.now() - startTime) / 1000, duration))} / {toTS(duration)}</div>
       <div class='relative w-full h-1 flex items-center justify-center overflow-clip rounded-[2px]'>
         <div class='bg-[rgba(217,217,217,0.4)] absolute left-0 w-full h-0.5' />
-        <div class='bg-white absolute w-full left-0 h-0.5 transform-gpu' style:--tw-translate-x='{clamp((Date.now() - startTime) / 10 / duration) - 100}%' />
+        <div class='bg-primary absolute w-full left-0 h-0.5 transform-gpu' style:--tw-translate-x='{clamp((Date.now() - startTime) / 10 / duration) - 100}%' />
       </div>
     {:catch error}
       <div class='text-red-500 text-sm font-light leading-none whitespace-pre-wrap'>{error.stack}</div>
@@ -90,7 +90,7 @@
               Playlist
             </Button>
           </Dialog.Trigger>
-          <Dialog.Content class='bg-black p-10 py-6 border-4 max-w-5xl w-auto max-h-[calc(100%-1rem)] items-center flex flex-col rounded-xl overflow-y-auto z-[100]'>
+          <Dialog.Content class='bg-background p-10 py-6 border-4 max-w-5xl w-auto max-h-[calc(100%-1rem)] items-center flex flex-col rounded-xl overflow-y-auto z-[100]'>
             {#each videoFiles as file, i (i)}
               <Button on:click={() => selectFile(file)} variant='ghost'>
                 <span class='text-ellipsis text-nowrap overflow-clip'>{file.name}</span>

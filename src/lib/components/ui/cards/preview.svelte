@@ -23,8 +23,8 @@
   $: spoiler = $settings.hideSpoilers && ['CURRENT', 'PLANNING'].includes(list(media)!)
 </script>
 
-<div class='!absolute w-[17.5rem] h-80 left-1/2 right-1/2 top-0 bottom-0 m-auto bg-neutral-950 z-30 rounded cursor-pointer absolute-container'>
-  <div class='h-[45%] banner relative bg-black rounded-t'>
+<div class='!absolute w-[17.5rem] h-80 left-1/2 right-1/2 top-0 bottom-0 m-auto bg-muted z-30 rounded cursor-pointer absolute-container'>
+  <div class='h-[45%] banner relative bg-background rounded-t'>
     {#if trace}
       {#if !SUPPORTS.isUnderPowered}
         <Load src={trace.image} alt={media.title?.english} class={cn('object-cover size-full blur-2xl saturate-200 absolute -z-10', hideFrame === false && 'hidden')} />
@@ -41,8 +41,8 @@
       {/if}
     {/if}
   </div>
-  <div class='w-full px-4 bg-neutral-950'>
-    <div class='text-lg font-bold truncate inline-block w-full text-white pt-2' title={title(media)}>
+  <div class='w-full px-4 bg-muted'>
+    <div class='text-lg font-bold truncate inline-block w-full text-primary pt-2' title={title(media)}>
       {title(media)}
     </div>
     <div class='flex flex-row'>
@@ -50,7 +50,7 @@
       <FavoriteButton {media} class='ml-2' />
       <BookmarkButton {media} class='ml-2' />
     </div>
-    <div class='details text-white capitalize pt-3 pb-2 flex text-[11px] overflow-clip text-ellipsis text-nowrap'>
+    <div class='details text-primary capitalize pt-3 pb-2 flex text-[11px] overflow-clip text-ellipsis text-nowrap'>
       <span class='text-nowrap flex items-center'>
         {format(media)}
       </span>

@@ -33,21 +33,21 @@
 
 {#if !$settings.minimalPlayerUI}
   {#each $animations as { type, id } (id)}
-    <div class='absolute animate-pulse-once' on:animationend={() => endAnimation(id)}>
+    <div class='absolute animate-pulse-once text-primary' on:animationend={() => endAnimation(id)}>
       {#if type === 'play'}
-        <Play size='64px' fill='white' />
+        <Play size='64px' fill='currentColor' />
       {:else if type === 'pause'}
-        <Pause size='64px' fill='white' />
+        <Pause size='64px' fill='currentColor' />
       {:else if type === 'seekforw'}
-        <FastForward size='64px' fill='white' />
+        <FastForward size='64px' fill='currentColor' />
       {:else if type === 'seekback'}
-        <Rewind size='64px' fill='white' />
+        <Rewind size='64px' fill='currentColor' />
       {:else if type === 'volumeup'}
-        <Volume2 size='64px' fill='white' />
+        <Volume2 size='64px' fill='currentColor' />
       {:else if type === 'volumedown'}
-        <Volume1 size='64px' fill='white' />
+        <Volume1 size='64px' fill='currentColor' />
       {:else}
-        <div class='text-4xl font-bold text-white'>{type}</div>
+        <div class='text-4xl font-bold text-primary'>{type}</div>
       {/if}
     </div>
   {/each}

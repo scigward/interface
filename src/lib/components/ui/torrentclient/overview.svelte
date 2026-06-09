@@ -71,14 +71,14 @@
         </div>
       </div>
       <div class='flex items-center gap-2'>
-        <HardDrive class='w-4 h-4 text-gray-500 mx-1' />
+        <HardDrive class='w-4 h-4 text-muted-foreground mx-1' />
         <div>
           <span class='text-muted-foreground'>Total Size</span>
           <div class='font-medium'>{fastPrettyBytes(torrent.size.total)}</div>
         </div>
       </div>
       <div class='flex items-center gap-2'>
-        <Puzzle class='w-4 h-4 text-gray-500 mx-1' />
+        <Puzzle class='w-4 h-4 text-muted-foreground mx-1' />
         <div>
           <span class='text-muted-foreground'>Pieces</span>
           <div class='font-medium'>{torrent.pieces.total} <span class='text-muted-foreground'>×</span> {fastPrettyBytes(torrent.pieces.size)}</div>

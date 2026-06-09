@@ -47,7 +47,7 @@
   <div class='gap-3 flex py-3 sm:flex-row flex-col'>
     <Tooltip.Root>
       <Tooltip.Trigger class='w-full' tabindex={-1}>
-        <Input class='bg-neutral-950 border-none' type='url' placeholder='https://example.com/manifest.json' bind:value={extensionInput} />
+        <Input class='bg-muted border-none' type='url' placeholder='https://example.com/manifest.json' bind:value={extensionInput} />
       </Tooltip.Trigger>
       <Tooltip.Content class='max-w-full w-52'>
         Destination URL of the extension manifest to import extensions from. This can be a direct URL to a .json file, an npm package prefixed with npm:, a file in a github repository prefixed with gh: or a file with the file: prefix and the code inlined as text.
@@ -127,7 +127,7 @@
     <div class='flex flex-col gap-y-2 justify-center'>
       {#each Object.entries(Object.groupBy(Object.values($savedConfigs), saved => saved.update ?? '')) as [id, extensions] (id) }
         {@const url = new URL(id)}
-        <div class='bg-neutral-950 px-4 py-3 rounded-md flex flex-row space-x-3 justify-between items-center w-full'>
+        <div class='bg-muted px-4 py-3 rounded-md flex flex-row space-x-3 justify-between items-center w-full'>
           <div class='flex space-x-2 items-center'>
             {#if url.protocol === 'gh:'}
               <GitBranch class='w-5 h-5 text-muted-foreground' />

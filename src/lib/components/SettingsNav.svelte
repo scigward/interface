@@ -22,11 +22,11 @@
 <nav class={cn('flex flex-col md:flex-row lg:flex-col gap-y-1 gap-x-2 pb-2 sm:pb-0', className)}>
   {#each items as { href, title }, i (i)}
     {@const isActive = $page.url.pathname === href}
-    <Button {href} variant='ghost' data-sveltekit-noscroll size={$breakpoints.md ? 'default' : 'lg'} class='bg-neutral-950 md:bg-transparent relative font-semibold justify-start last:odd:col-span-2'>
+    <Button {href} variant='ghost' data-sveltekit-noscroll size={$breakpoints.md ? 'default' : 'lg'} class='bg-muted md:bg-transparent relative font-semibold justify-start last:odd:col-span-2'>
       {#if isActive}
-        <div class='bg-white absolute inset-0 rounded-md' in:send={{ key }} out:receive={{ key }} />
+        <div class='bg-primary absolute inset-0 rounded-md' in:send={{ key }} out:receive={{ key }} />
       {/if}
-      <div class='relative text-white transition-colors duration-300' class:!text-black={isActive}>
+      <div class='relative text-primary transition-colors duration-300' class:!text-background={isActive}>
         {title}
       </div>
     </Button>

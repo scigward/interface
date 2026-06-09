@@ -69,7 +69,7 @@
 </script>
 
 <Dialog.Root portal='#root' bind:open={isOpen}>
-  <Dialog.Content class='flex flex-col max-h-[95%] max-w-3xl bg-black p-4 md:p-6'>
+  <Dialog.Content class='flex flex-col max-h-[95%] max-w-3xl bg-background p-4 md:p-6'>
     <Dialog.Header>
       <Dialog.Title>Install Extensions</Dialog.Title>
       <Dialog.Description class='truncate'>
@@ -79,7 +79,7 @@
 
     {#if configs === undefined && !error}
       <div class='overflow-y-auto flex flex-col flex-1 min-h-0 items-center justify-center gap-4 py-8'>
-        <div class='animate-spin size-6 border-2 border-neutral-400 border-t-transparent rounded-full' />
+        <div class='animate-spin size-6 border-2 border-muted-foreground border-t-transparent rounded-full' />
         <p class='text-muted-foreground'>Fetching extension manifest...</p>
       </div>
     {:else if error}
@@ -101,7 +101,7 @@
                   <Dialog.Title class='font-weight-bold font-bold'>{config.name} Source Code</Dialog.Title>
                   {#await safejs(config.code)}
                     <div class='flex items-center justify-center py-8'>
-                      <div class='animate-spin size-4 border-2 border-neutral-400 border-t-transparent rounded-full' />
+                      <div class='animate-spin size-4 border-2 border-muted-foreground border-t-transparent rounded-full' />
                     </div>
                   {:then code}
                     {#if code}
@@ -119,7 +119,7 @@
           </ExtensionCard>
         {/each}
         {#if existingConfigs.length}
-          <div class='bg-neutral-900 border border-neutral-800 px-4 py-3 rounded-md'>
+          <div class='bg-accent border border-border px-4 py-3 rounded-md'>
             <p class='text-sm font-bold text-muted-foreground'>Already Installed</p>
             <p class='text-xs text-muted-foreground mt-1'>
               {existingConfigs.map(c => c.name).join(', ')} already exist and will be skipped.

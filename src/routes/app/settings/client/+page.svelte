@@ -34,7 +34,7 @@
       <Switch {id} bind:checked={$settings.enableDoH} />
     </SettingCard>
     <SettingCard let:id title='DNS Over HTTPS URL' description='What URL to use for querying DNS Over HTTPS.'>
-      <Input type='url' bind:value={$settings.doHURL} {id} placeholder='https://cloudflare-dns.com/dns-query' class='w-80 shrink-0 bg-background' />
+      <Input type='url' bind:value={$settings.doHURL} {id} placeholder='https://cloudflare-dns.com/dns-query' class='w-80 shrink-0' />
     </SettingCard>
   {:else}
     <SettingCard title='Use DNS Over HTTPS' description="Enables DNS Over HTTPS, useful if your ISP blocks certain domains. On Android this is a system setting, which cannot be changed here. It's usually named 'Private DNS' or 'DNS over HTTPs'.">
@@ -47,7 +47,7 @@
 
 <SettingCard let:id title='Torrent Download Location' description={`Path to the folder used to store torrents. By default this is the OS's TEMP/TMP cache folder, which might lose data when your OS tries to reclaim storage.${SUPPORTS.isAndroid ? '\n\nSD Card saves to the Cards Download folder. If SD Card is not available torrents will automatically be saved to the Phone\'s Downloads folder' : ''}`}>
   <div class='flex'>
-    <Input type='url' bind:value={$settings.torrentPath} readonly {id} placeholder='/tmp/webtorrent' class='sm:w-60 bg-background rounded-r-none pointer-events-none' />
+    <Input type='url' bind:value={$settings.torrentPath} readonly {id} placeholder='/tmp/webtorrent' class='sm:w-60 rounded-r-none pointer-events-none' />
     {#if !SUPPORTS.isAndroid && !SUPPORTS.isIOS}
       <Button class='rounded-l-none font-bold' on:click={() => selectDownloadFolder()} variant='secondary'>Select Folder</Button>
     {:else}
@@ -63,18 +63,18 @@
 </SettingCard>
 <SettingCard let:id title='Transfer Speed Limit' description='Download/Upload speed limit for torrents, higher values increase CPU usage, and values higher than your storage write speeds will quickly fill up RAM.'>
   <div class='flex items-center relative scale-parent border border-input rounded-md self-baseline'>
-    <Input type='number' inputmode='numeric' pattern='[0-9]*.?[0-9]*' min='1' max='50' step='0.1' bind:value={$settings.torrentSpeed} {id} class='w-32 shrink-0 bg-background pr-12 border-0 no-scale' />
+    <Input type='number' inputmode='numeric' pattern='[0-9]*.?[0-9]*' min='1' max='50' step='0.1' bind:value={$settings.torrentSpeed} {id} class='w-32 shrink-0 pr-12 border-0 no-scale' />
     <div class='shrink-0 absolute right-3 z-10 pointer-events-none text-sm leading-5'>Mb/s</div>
   </div>
 </SettingCard>
 <SettingCard let:id title='Max Number of Connections' description='Number of peers per torrent. Higher values will increase download speeds but might quickly fill up available ports if your ISP limits the maximum allowed number of open connections.'>
-  <Input type='number' inputmode='numeric' pattern='[0-9]*' min='1' max='512' bind:value={$settings.maxConns} {id} class='w-32 shrink-0 bg-background' />
+  <Input type='number' inputmode='numeric' pattern='[0-9]*' min='1' max='512' bind:value={$settings.maxConns} {id} class='w-32 shrink-0' />
 </SettingCard>
 <SettingCard let:id title='Forwarded Torrent Port' description='Forwarded port used for incoming torrent connections. 0 automatically finds an open unused port. Change this to a specific port if you forwarded manually, or if you use a VPN'>
-  <Input type='number' inputmode='numeric' pattern='[0-9]*' min='0' max='65536' bind:value={$settings.torrentPort} {id} class='w-32 shrink-0 bg-background' />
+  <Input type='number' inputmode='numeric' pattern='[0-9]*' min='0' max='65536' bind:value={$settings.torrentPort} {id} class='w-32 shrink-0' />
 </SettingCard>
 <SettingCard let:id title='DHT Port' description='Port used for DHT connections. 0 is automatic.'>
-  <Input type='number' inputmode='numeric' pattern='[0-9]*' min='0' max='65536' bind:value={$settings.dhtPort} {id} class='w-32 shrink-0 bg-background' />
+  <Input type='number' inputmode='numeric' pattern='[0-9]*' min='0' max='65536' bind:value={$settings.dhtPort} {id} class='w-32 shrink-0' />
 </SettingCard>
 <SettingCard let:id title='Disable DHT' description='Disables Distributed Hash Tables for use in private trackers to improve privacy. Might greatly reduce the amount of discovered peers.'>
   <Switch {id} bind:checked={$settings.torrentDHT} />
@@ -85,17 +85,17 @@
 
 <div class='font-weight-bold text-xl font-bold'>NZB Client Settings</div>
 <SettingCard let:id title='Provider Domain' description='The domain of your NZB provider, without the protocol. For example, if your provider is accessed at https://news.example.com, just enter news.example.com here.'>
-  <Input type='url' bind:value={$settings.nzbDomain} {id} placeholder='news.example.com' class='w-80 shrink-0 bg-background' />
+  <Input type='url' bind:value={$settings.nzbDomain} {id} placeholder='news.example.com' class='w-80 shrink-0' />
 </SettingCard>
 <SettingCard let:id title='Provider Login' description='The Login/Username for your NZB provider.'>
-  <Input type='text' bind:value={$settings.nzbLogin} {id} placeholder='admin' class='w-80 shrink-0 bg-background' />
+  <Input type='text' bind:value={$settings.nzbLogin} {id} placeholder='admin' class='w-80 shrink-0' />
 </SettingCard>
 <SettingCard let:id title='Provider Password' description='The Password for your NZB provider. This is stored in plaintext in the settings file, so be aware of that.'>
-  <Input type='password' bind:value={$settings.nzbPassword} {id} placeholder='admin1' class='w-80 shrink-0 bg-background' />
+  <Input type='password' bind:value={$settings.nzbPassword} {id} placeholder='admin1' class='w-80 shrink-0' />
 </SettingCard>
 <SettingCard let:id title='Connection Port' description='The port used to connect to your NZB provider. 119 is the default for NNTP.'>
-  <Input type='number' inputmode='numeric' pattern='[0-9]*' step='1' bind:value={$settings.nzbPort} {id} placeholder='119' class='w-32 shrink-0 bg-background' />
+  <Input type='number' inputmode='numeric' pattern='[0-9]*' step='1' bind:value={$settings.nzbPort} {id} placeholder='119' class='w-32 shrink-0' />
 </SettingCard>
 <SettingCard let:id title='Connection Pool Size' description={'The number of simultaneous connections to use for downloading from your NZB provider. Higher values might increase download speeds but can cause issues with some providers if set too high.\n\nThis is shared between extension, so if you have multiple NZB extensions configured they will share the same pool of connections.'}>
-  <Input type='number' inputmode='numeric' pattern='[0-9]*' step='1' bind:value={$settings.nzbPoolSize} {id} placeholder='5' class='w-32 shrink-0 bg-background' />
+  <Input type='number' inputmode='numeric' pattern='[0-9]*' step='1' bind:value={$settings.nzbPoolSize} {id} placeholder='5' class='w-32 shrink-0' />
 </SettingCard>

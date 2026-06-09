@@ -13,7 +13,7 @@
 
 <tr
   class={cn(
-    'hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors',
+    'hover:bg-accent/50 data-[state=selected]:bg-muted border-b transition-colors',
     className
   )}
   {...$$restProps}

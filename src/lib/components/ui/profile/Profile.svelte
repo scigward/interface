@@ -13,7 +13,7 @@
     user: ResultOf<typeof UserFrag>
   }
 
-  let className: $$Props['class'] = 'inline-block ring-4 ring-black size-8 bg-black group-focus-visible/profile:ring-neutral-100 !border-0'
+  let className: $$Props['class'] = 'inline-block ring-4 ring-background size-8 bg-background group-focus-visible/profile:ring-foreground !border-0'
   export { className as class }
 
   export let user: ResultOf<typeof UserFrag>
@@ -27,14 +27,14 @@
 <div class='flex'>
   <Popover.Root disableFocusTrap>
     <Popover.Trigger class='flex group/profile'>
-      <Avatar.Root class={cn('group-focus-visible/profile:border border-white', className)}>
+      <Avatar.Root class={cn('group-focus-visible/profile:border border-primary', className)}>
         <Avatar.Image src={avatar} alt={name} />
         <Avatar.Fallback>{name}</Avatar.Fallback>
       </Avatar.Root>
     </Popover.Trigger>
     <Popover.Content class='p-1 m-3 rounded-md shadow root-bg border-none w-auto' style='--theme-base-color: {user.options?.profileColor ?? '#000'}'>
       <div class='w-[300px] rounded core-bg gap-2 flex flex-col pb-2'>
-        <div class={cn('w-full h-[105px] relative p-3 flex items-end', !banner && 'bg-white/10')}>
+        <div class={cn('w-full h-[105px] relative p-3 flex items-end', !banner && 'bg-primary/10')}>
           {#if banner}
             <Load src={banner} alt='banner' class='absolute top-0 left-0 size-full rounded-t opacity-50 pointer-events-none object-cover' />
           {/if}
@@ -46,7 +46,7 @@
             <div class='font-extrabold pb-0.5 text-2xl text-ellipsis overflow-clip pr-0.5'>
               {name}
             </div>
-            <div class='details text-neutral-200 flex text-[11px]'>
+            <div class='details text-primary/80 flex text-[11px]'>
               {#if user.isFollower}
                 <span class='text-nowrap flex items-center'>Follows you</span>
               {/if}
@@ -64,7 +64,7 @@
           {/if}
         </div>
         <Shadow html={user.about ?? 'No user description'} class='w-full max-h-[200px] text-sm py-2 px-4 overflow-y-auto overflow-x-clip' />
-        <div class='details text-neutral-200 flex text-[11px] px-4'>
+        <div class='details text-primary/80 flex text-[11px] px-4'>
           <span class='text-nowrap flex items-center'>{user.statistics?.anime?.count ?? 0} anime</span>
           <span class='text-nowrap flex items-center'>{user.statistics?.anime?.episodesWatched ?? 0} episodes</span>
           <span class='text-nowrap flex items-center'>{since(new Date(Date.now() - (user.statistics?.anime?.minutesWatched ?? 0) * 60 * 1000)).replace('ago', 'watched')}</span>

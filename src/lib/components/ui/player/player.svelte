@@ -778,7 +778,7 @@
 
 <svelte:document bind:fullscreenElement bind:visibilityState use:holdToFF={'key'} on:fullscreenchange={checkMobileFullscreen} />
 
-<div class='size-full relative content-center bg-black overflow-clip text-left touch-none'
+<div class='size-full relative content-center bg-background overflow-clip text-left touch-none'
   class:fitWidth class:seeking class:pip={pictureInPictureElement} bind:this={wrapper}
   on:navigate={() => resetMove(2000)}
   on:wheel={handleWheel}
@@ -871,12 +871,12 @@
       {#if seeking}
         {#await thumbnailer.getThumbnail(seekIndex) then src}
           {#if src}
-            <img {src} alt='thumbnail' class='size-full bg-black absolute top-0 right-0 object-contain' loading='lazy' decoding='async' class:!object-cover={fitWidth} />
+            <img {src} alt='thumbnail' class='size-full bg-background absolute top-0 right-0 object-contain' loading='lazy' decoding='async' class:!object-cover={fitWidth} />
           {/if}
         {/await}
       {/if}
       {#if stats}
-        <div class='absolute top-10 left-10 border-white/15 border bg-black/60 pointer-events-auto px-3 py-2 rounded'>
+        <div class='absolute top-10 left-10 border-foreground/15 border bg-background/60 pointer-events-auto px-3 py-2 rounded'>
           <button class='absolute right-3 top-1' type='button' use:click={toggleStats}>×</button>
           FPS: {stats.fps}<br />
           Presented frames: {stats.presented}<br />
@@ -891,24 +891,24 @@
       {/if}
       {#if $settings.minimalPlayerUI || SUPPORTS.isMobile}
         <Options {wrapper} bind:open bind:openPath {video} {seekTo} screenshot={ss} {selectAudio} {selectVideo} {fullscreen} chapters={$chapters} {subtitles} {videoFiles} {selectFile} {pip} bind:playbackRate={$playbackRate} bind:subtitleDelay id='player-options-button-top'
-          class='inline-flex p-3 size-12 absolute z-[1] top-4 right-4 bg-black/20 pointer-events-auto transition-opacity delay-150 select:opacity-100 {immersed && 'opacity-0'}' />
+          class='inline-flex p-3 size-12 absolute z-[1] top-4 right-4 bg-background/20 pointer-events-auto transition-opacity delay-150 select:opacity-100 {immersed && 'opacity-0'}' />
       {/if}
       {#if fastForwarding}
-        <div class='absolute top-10 font-bold text-sm animate-[fade-in_.4s_ease] flex items-center leading-none bg-black/60 px-4 py-2 rounded-2xl'>x2 <FastForward class='ml-2' size='12' fill='currentColor' /></div>
+        <div class='absolute top-10 font-bold text-sm animate-[fade-in_.4s_ease] flex items-center leading-none bg-background/60 px-4 py-2 rounded-2xl'>x2 <FastForward class='ml-2' size='12' fill='currentColor' /></div>
       {/if}
       {#if !SUPPORTS.isAndroidTV}
         <div class='mobile:flex hidden gap-10 absolute items-center transition-opacity select:opacity-100 z-[0]' class:opacity-0={immersed || seeking}>
-          <Button class='p-3 size-10 pointer-events-auto rounded-[50%] bg-black/20' variant='ghost' disabled={!prev} on:click={() => prev?.()}>
+          <Button class='p-3 size-10 pointer-events-auto rounded-[50%] bg-background/20' variant='ghost' disabled={!prev} on:click={() => prev?.()}>
             <SkipBack fill='currentColor' strokeWidth='1' />
           </Button>
-          <Button class={cn('p-2.5 size-12 pointer-events-auto rounded-[50%] bg-black/20', buffering && 'opacity-10')} variant='ghost' on:click={playPause}>
+          <Button class={cn('p-2.5 size-12 pointer-events-auto rounded-[50%] bg-background/20', buffering && 'opacity-10')} variant='ghost' on:click={playPause}>
             {#if paused}
               <Play fill='currentColor' class='p-0.5' />
             {:else}
               <Pause fill='currentColor' strokeWidth='1' />
             {/if}
           </Button>
-          <Button class='p-3 size-10 pointer-events-auto rounded-[50%] bg-black/20' variant='ghost' disabled={!next} on:click={() => next?.()}>
+          <Button class='p-3 size-10 pointer-events-auto rounded-[50%] bg-background/20' variant='ghost' disabled={!next} on:click={() => next?.()}>
             <SkipForward fill='currentColor' strokeWidth='1' />
           </Button>
         </div>
@@ -919,7 +919,7 @@
       {/if}
       {#if buffering}
         <div in:fade={{ duration: 200, delay: 500 }} out:fade={{ duration: 200 }}>
-          <div class='border-[3px] rounded-[50%] w-10 h-10 drop-shadow-lg border-transparent border-t-white animate-spin' />
+          <div class='border-[3px] rounded-[50%] w-10 h-10 drop-shadow-lg border-transparent border-t-foreground animate-spin' />
         </div>
       {/if}
       <Animations />
@@ -948,7 +948,7 @@
       <Seekbar {duration} {currentTime} buffer={buffer / duration * 100} chapters={$chapters} bind:seeking bind:seek={seekPercent} on:seeked={finishSeek} on:seeking={startSeek} {thumbnailer} on:keydown={seekBarKey} on:dblclick={fullscreen} />
       {#if !$settings.minimalPlayerUI && !SUPPORTS.isAndroid && !SUPPORTS.isIOS}
         <div class='justify-between gap-2 flex'>
-          <div class='flex text-white gap-2'>
+          <div class='flex text-foreground gap-2'>
             <Button class='p-3 size-12 relative shrink-0' variant='ghost' on:click={playPause} on:keydown={keywrap(playPause)} id='player-play-pause-button' data-up='#player-seekbar'>
               {#if paused}
                 <div transition:scaleBlurFade class='absolute'>

@@ -66,7 +66,7 @@
         <div class={!target ? 'px-3 w-full' : 'contents'}>
           <div use:click={() => play(episode)}
             class={cn(
-              'select:scale-[1.05] select:shadow-lg scale-100 transition-[transform,box-shadow] duration-200 shrink-0 ease-out focus-visible:ring-ring focus-visible:ring-1 rounded-md bg-neutral-950 text-secondary-foreground select:bg-neutral-900 flex w-full max-h-28 cursor-pointer relative overflow-hidden group',
+              'select:scale-[1.05] select:shadow-lg scale-100 transition-[transform,box-shadow] duration-200 shrink-0 ease-out focus-visible:ring-ring focus-visible:ring-1 rounded-md bg-muted text-secondary-foreground select:bg-accent flex w-full max-h-28 cursor-pointer relative overflow-hidden group',
               target && 'ring-custom ring-1',
               filler && '!ring-yellow-400 ring-1'
             )}>
@@ -78,20 +78,20 @@
                   {/if}
                 </div>
                 {#if underPoweredSpoiler}
-                  <Logo class='absolute size-8 text-neutral-600 inset-0 m-auto' />
+                  <Logo class='absolute size-8 text-muted-foreground inset-0 m-auto' />
                 {/if}
                 {#if length ?? runtime ?? media.duration}
-                  <div class='absolute bottom-1 left-1 bg-neutral-900/80 text-secondary-foreground text-[9.6px] px-1 py-0.5 rounded'>
+                  <div class='absolute bottom-1 left-1 bg-accent/80 text-secondary-foreground text-[9.6px] px-1 py-0.5 rounded'>
                     {length ?? runtime ?? media.duration}m
                   </div>
                 {/if}
                 {#if rating && !underPoweredSpoiler}
-                  <div class={cn('absolute bottom-1 right-1 bg-neutral-900/80 text-secondary-foreground text-[9.6px] px-1 py-0.5 rounded flex', spoiler && 'blur-[3px]')}>
+                  <div class={cn('absolute bottom-1 right-1 bg-accent/80 text-secondary-foreground text-[9.6px] px-1 py-0.5 rounded flex', spoiler && 'blur-[3px]')}>
                     <Star class='size-2.5 mt-0.5 mr-1 text-yellow-400' fill='currentColor' />
                     {spoiler ? '5.00' : rating}
                   </div>
                 {/if}
-                <div class='absolute flex items-center justify-center size-full bg-black group-select:bg-opacity-50 bg-opacity-0 duration-200 text-white transition-[background] ease-out top-0'>
+                <div class='absolute flex items-center justify-center size-full bg-background group-select:bg-opacity-50 bg-opacity-0 duration-200 text-foreground transition-[background] ease-out top-0'>
                   <Play class='size-6 scale-75 opacity-0 group-select:opacity-100 group-select:scale-100 duration-200 transition-[transform,opacity] ease-out' fill='currentColor' />
                 </div>
               </div>
@@ -103,7 +103,7 @@
               {#if watched || completed}
                 <div class='mb-2 h-0.5 overflow-hidden w-full bg-custom shrink-0' />
               {:else if $watchProgress?.episode === episode}
-                <div class='w-full bg-neutral-800 mb-2'>
+                <div class='w-full bg-accent mb-2'>
                   <div class='h-0.5 overflow-hidden bg-custom shrink-0' style:width={$watchProgress.progress + '%'} />
                 </div>
               {/if}
@@ -127,7 +127,7 @@
                 <div class='-space-x-1 ml-auto inline-flex pt-1 pr-0.5'>
                   {#each followerEntries.filter(e => e?.progress === episode) as followerEntry, i (followerEntry?.user?.id ?? i)}
                     {#if followerEntry?.user}
-                      <Profile user={followerEntry.user} class='ring-2 ring-neutral-950 size-4 bg-neutral-950' />
+                      <Profile user={followerEntry.user} class='ring-2 ring-muted size-4 bg-background' />
                     {/if}
                   {/each}
                 </div>

@@ -68,7 +68,7 @@
 </SettingCard>
 <SettingCard let:id title='Seek Duration' description='Seconds to skip forward or backward when using the seek buttons or keyboard shortcuts. Higher values might negatively impact buffering speeds.'>
   <div class='flex items-center relative scale-parent border border-input rounded-md self-baseline'>
-    <Input type='number' inputmode='numeric' pattern='[0-9]*.?[0-9]*' min='1' max='50' bind:value={$settings.playerSeek} {id} class='w-32 shrink-0 bg-background pr-12 border-0 no-scale' />
+    <Input type='number' inputmode='numeric' pattern='[0-9]*.?[0-9]*' min='1' max='50' bind:value={$settings.playerSeek} {id} class='w-32 shrink-0 pr-12 border-0 no-scale' />
     <div class='shrink-0 absolute right-3 z-10 pointer-events-none text-sm leading-5'>sec</div>
   </div>
 </SettingCard>
@@ -97,7 +97,7 @@
   {#if !SUPPORTS.isAndroid}
     <SettingCard let:id title='External Video Player' description='Executable for an external video player. Make sure the player supports HTTP sources.'>
       <div class='flex'>
-        <Input type='url' bind:value={$settings.playerPath} readonly {id} class='w-32 shrink-0 bg-background rounded-r-none pointer-events-none' />
+        <Input type='url' bind:value={$settings.playerPath} readonly {id} class='w-32 shrink-0 rounded-r-none pointer-events-none' />
         <Button class='rounded-l-none font-bold' on:click={selectPlayer} variant='secondary'>Select</Button>
       </div>
     </SettingCard>

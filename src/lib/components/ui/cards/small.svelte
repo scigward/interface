@@ -32,7 +32,7 @@
   $: status = list(media)
 </script>
 
-<div class='text-white cursor-pointer shrink-0 relative pointer-events-auto active:z-[10] focus-visible:z-[10]' use:hover={[onclick, onhover]}>
+<div class='text-primary cursor-pointer shrink-0 relative pointer-events-auto active:z-[10] focus-visible:z-[10]' use:hover={[onclick, onhover]}>
   {#if !hidden && hoverable}
     <PreviewCard {media} />
   {/if}
@@ -46,7 +46,7 @@
       {/if}
       {title(media)}
     </div>
-    <div class='flex text-neutral-500 mt-auto pt-2 justify-between'>
+    <div class='flex text-muted-foreground mt-auto pt-2 justify-between'>
       <div class='flex text-xs font-medium'>
         <CalendarDays class='w-[1rem] h-[1rem] mr-1 -ml-0.5' />
         {media.seasonYear ?? media.startDate?.year ?? 'TBA'}

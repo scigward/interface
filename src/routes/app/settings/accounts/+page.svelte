@@ -85,7 +85,7 @@
 
 <div class='font-weight-bold text-xl font-bold'>Account Settings</div>
 <div>
-  <div class='bg-neutral-900 px-6 py-4 rounded-t-md flex flex-row gap-3'>
+  <div class='bg-accent px-6 py-4 rounded-t-md flex flex-row gap-3'>
     {#if anilist?.viewer?.id}
       <div use:click={() => native.openURL(`https://anilist.co/user/${anilist.viewer?.name}`)} class='flex flex-row gap-3'>
         <Avatar.Root class='size-8 rounded-md'>
@@ -106,7 +106,7 @@
     {/if}
     <Anilist class='size-6 ml-auto' />
   </div>
-  <div class='bg-neutral-950 px-6 py-4 rounded-b-md flex justify-between'>
+  <div class='bg-muted px-6 py-4 rounded-b-md flex justify-between'>
     <div class='flex items-center gap-2'>
       {#if anilist?.viewer?.id}
         <Button variant='secondary' on:click={() => client.client.logout()}>Logout</Button>
@@ -117,7 +117,7 @@
         <Dialog.Trigger let:builder asChild>
           <Button builders={[builder]} variant='ghost' size='icon' class='animated-icon'><Bolt size={18} /></Button>
         </Dialog.Trigger>
-        <Dialog.Content class='max-w-4xl w-full bg-black'>
+        <Dialog.Content class='max-w-4xl w-full bg-background'>
           <Dialog.Header>
             <Dialog.Title class='font-weight-bold font-bold'>AniList Settings</Dialog.Title>
           </Dialog.Header>
@@ -158,7 +158,7 @@
   </div>
 </div>
 <div>
-  <div class='bg-neutral-900 px-6 py-4 rounded-t-md flex flex-row gap-3'>
+  <div class='bg-accent px-6 py-4 rounded-t-md flex flex-row gap-3'>
     {#if kitsu?.id}
       <div use:click={() => native.openURL(`https://kitsu.app/users/${kitsu.name}`)} class='flex flex-row gap-3'>
         <Avatar.Root class='size-8 rounded-md'>
@@ -179,7 +179,7 @@
     {/if}
     <Kitsu class='size-6 !ml-auto' />
   </div>
-  <div class='bg-neutral-950 px-6 py-4 rounded-b-md flex justify-between'>
+  <div class='bg-muted px-6 py-4 rounded-b-md flex justify-between'>
     {#if kitsu?.id}
       <Button variant='secondary' on:click={() => ksclient.logout()}>Logout</Button>
     {:else}
@@ -221,7 +221,7 @@
 
 </div>
 <div>
-  <div class='bg-neutral-900 px-6 py-4 rounded-t-md flex flex-row gap-3'>
+  <div class='bg-accent px-6 py-4 rounded-t-md flex flex-row gap-3'>
     {#if mal?.id}
       <div use:click={() => native.openURL(`https://myanimelist.net/profile/${mal.name}`)} class='flex flex-row gap-3'>
         <Avatar.Root class='size-8 rounded-md'>
@@ -242,7 +242,7 @@
     {/if}
     <MyAnimeList class='size-6 ml-auto' />
   </div>
-  <div class='bg-neutral-950 px-6 py-4 rounded-b-md flex justify-between'>
+  <div class='bg-muted px-6 py-4 rounded-b-md flex justify-between'>
     <div class='flex items-center gap-2'>
       {#if mal?.id}
         <Button variant='secondary' on:click={() => malclient.logout()}>Logout</Button>
@@ -253,7 +253,7 @@
         <Dialog.Trigger let:builder asChild>
           <Button builders={[builder]} variant='ghost' size='icon' class='animated-icon'><Bolt size={18} /></Button>
         </Dialog.Trigger>
-        <Dialog.Content class='max-w-4xl w-full bg-black'>
+        <Dialog.Content class='max-w-4xl w-full bg-background'>
           <Dialog.Header>
             <Dialog.Title class='font-weight-bold font-bold'>MyAnimeList Settings</Dialog.Title>
           </Dialog.Header>
@@ -270,7 +270,7 @@
   </div>
 </div>
 <div>
-  <div class='bg-neutral-900 px-6 py-4 rounded-t-md flex flex-row gap-3'>
+  <div class='bg-accent px-6 py-4 rounded-t-md flex flex-row gap-3'>
     {#if simkl?.id}
       <div use:click={() => native.openURL(`https://simkl.com/profile/${simkl.name}`)} class='flex flex-row gap-3'>
         <Avatar.Root class='size-8 rounded-md'>
@@ -291,7 +291,7 @@
     {/if}
     <Simkl class='size-6 ml-auto' />
   </div>
-  <div class='bg-neutral-950 px-6 py-4 rounded-b-md flex justify-between'>
+  <div class='bg-muted px-6 py-4 rounded-b-md flex justify-between'>
     <div class='flex items-center gap-2'>
       {#if simkl?.id}
         <Button variant='secondary' on:click={() => simklclient.logout()}>Logout</Button>
@@ -302,7 +302,7 @@
         <Dialog.Trigger let:builder asChild>
           <Button builders={[builder]} variant='ghost' size='icon' class='animated-icon'><Bolt size={18} /></Button>
         </Dialog.Trigger>
-        <Dialog.Content class='max-w-4xl w-full bg-black'>
+        <Dialog.Content class='max-w-4xl w-full bg-background'>
           <Dialog.Header>
             <Dialog.Title class='font-weight-bold font-bold'>Simkl Settings</Dialog.Title>
           </Dialog.Header>
@@ -322,7 +322,7 @@
   </div>
 </div>
 <div>
-  <div class='bg-neutral-900 px-6 py-4 rounded-t-md flex flex-row gap-3'>
+  <div class='bg-accent px-6 py-4 rounded-t-md flex flex-row gap-3'>
     <div class='flex flex-row gap-3'>
       <div class='flex flex-col'>
         <div class='text-sm'>
@@ -335,7 +335,7 @@
     </div>
     <Folder class='size-6 !ml-auto' fill='currentColor' />
   </div>
-  <div class='bg-neutral-950 px-6 py-4 rounded-b-md flex justify-end h-[68px] gap-4'>
+  <div class='bg-muted px-6 py-4 rounded-b-md flex justify-end h-[68px] gap-4'>
     <Tooltip.Root>
       <Tooltip.Trigger>
         <CloudOff size={16} class='text-muted-foreground' />

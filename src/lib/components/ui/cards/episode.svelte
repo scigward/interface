@@ -31,7 +31,7 @@
   $: status = list(media)
 </script>
 
-<div class='text-white p-4 cursor-pointer shrink-0 relative pointer-events-auto' class:z-40={!hidden} use:hover={[onclick, onhover]}>
+<div class='text-primary p-4 cursor-pointer shrink-0 relative pointer-events-auto' class:z-40={!hidden} use:hover={[onclick, onhover]}>
   {#if !hidden}
     <PreviewCard {media} {trace} />
   {/if}
@@ -51,13 +51,13 @@
           <div class='pt-[1px]'>
             Episode {trace.episode}
           </div>
-          <div class='text-neutral-500 mt-0.5'>
+          <div class='text-muted-foreground mt-0.5'>
             {Math.round(trace.similarity * 100)}%
           </div>
         </div>
       {/if}
     </div>
-    <div class='flex text-neutral-500 mt-auto pt-2 justify-between'>
+    <div class='flex text-muted-foreground mt-auto pt-2 justify-between'>
       <div class='flex text-xs font-medium'>
         <CalendarDays class='w-[1rem] h-[1rem] mr-1 -ml-0.5' />
         {media.seasonYear ?? 'TBA'}

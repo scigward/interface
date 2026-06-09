@@ -15,7 +15,7 @@
   <DrawerOverlay />
   <DrawerPrimitive.Content
     class={cn(
-      'bg-background fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col border-b border-b-background shadow-2xl border-t-neutral-700/60 border-t-4 bg-clip-padding',
+      'bg-background fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col border-b border-b-background shadow-2xl border-t-border/60 border-t-4 bg-clip-padding',
       className
     )}
     {...$$restProps}>

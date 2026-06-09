@@ -215,20 +215,20 @@
 <svelte:window on:drop={handleTransfer} on:paste={handleTransfer} />
 
 <Dialog.Root bind:open onOpenChange={close} portal='#episodeListTarget'>
-  <Dialog.Content class='bg-black h-full max-w-5xl w-full max-h-[calc(100%-1rem)] border-b-0 !rounded-b-none mt-2 p-0 items-center flex-col flex lg:rounded-t-xl overflow-clip z-[100] gap-0'>
+  <Dialog.Content class='bg-background h-full max-w-5xl w-full max-h-[calc(100%-1rem)] border-b-0 !rounded-b-none mt-2 p-0 items-center flex-col flex lg:rounded-t-xl overflow-clip z-[100] gap-0'>
     <!-- this hacky thing is required for dialog root focus trap... pitiful -->
     <div class='size-0' tabindex='0' />
     {#if $searchStore}
       <div class='absolute top-0 left-0 size-full max-h-36 overflow-hidden flex items-end'>
         <Banner media={$searchStore.media} class='object-cover size-full absolute bottom-[0.5px] left-0 -z-10 opacity-40' />
-        <div class='w-full h-[70%] bg-gradient-to-t from-black/80 to-transparent' />
+        <div class='w-full h-[70%] bg-gradient-to-t from-background/80 to-transparent' />
       </div>
       <div class='gap-4 w-full relative h-full flex flex-col pt-8' style:--custom={$searchStore.media.coverImage?.color ?? '#fff'} style:--red={r} style:--green={g} style:--blue={b}>
         <div class='px-4 sm:px-6 space-y-4'>
           <div class='font-weight-bold text-2xl font-bold text-ellipsis text-nowrap overflow-hidden'>{title($searchStore.media)}</div>
           <div class='flex items-center relative scale-parent'>
             <Input
-              class='pl-9 bg-background select:bg-accent select:text-accent-foreground shadow-sm no-scale placeholder:opacity-50'
+              class='pl-9 select:bg-accent select:text-accent-foreground shadow-sm no-scale placeholder:opacity-50'
               placeholder='Filter by text, or paste a magnet link or torrent file here to specify a torrent manually'
               bind:value={inputText} />
             <MagnifyingGlass class='h-4 w-4 shrink-0 opacity-50 absolute left-3 text-muted-foreground z-10 pointer-events-none' />
@@ -236,7 +236,7 @@
           <div class='flex items-center gap-4 justify-around flex-wrap'>
             <div class='flex items-center space-x-2 grow'>
               <span>Episode</span>
-              <Input type='number' inputmode='numeric' pattern='[0-9]*' min='0' max='65536' bind:value={$searchStore.episode} class='w-32 shrink-0 bg-background grow' />
+              <Input type='number' inputmode='numeric' pattern='[0-9]*' min='0' max='65536' bind:value={$searchStore.episode} class='w-32 shrink-0 grow' />
             </div>
             <div class='flex items-center space-x-2 grow'>
               <span>Resolution</span>
@@ -254,7 +254,7 @@
         <div class='h-full overflow-y-auto px-4 sm:px-6 pt-2' role='menu' tabindex='-1' on:keydown={stopAnimation} on:focusin={stopAnimation} on:pointerenter={stopAnimation} on:pointermove={stopAnimation} use:dragScroll style:--custom={$searchStore.media.coverImage?.color ?? '#fff'} style:--red={r} style:--green={g} style:--blue={b}>
           {#if $searchStore.media}
             {#each filterAndSortResults(concatResults, inputText, $downloaded) as result (result.hash)}
-              <div class='p-3 flex cursor-pointer mb-2 relative rounded-md overflow-hidden bg-neutral-950 group/card select:ring-1 select:ring-custom select:bg-neutral-900 select:scale-[1.02] select:shadow-lg scale-100 transition-all [content-visibility:auto] [contain-intrinsic-height:auto_106px]'
+              <div class='p-3 flex cursor-pointer mb-2 relative rounded-md overflow-hidden bg-muted group/card select:ring-1 select:ring-custom select:bg-accent select:scale-[1.02] select:shadow-lg scale-100 transition-all [content-visibility:auto] [contain-intrinsic-height:auto_106px]'
                 class:opacity-40={result.accuracy === 'low'}
                 use:click={() => play(result)}
                 title={result.parseObject.file_name[0]}
@@ -301,8 +301,8 @@
                         </span>
                       {/if}
                       <span class={cn('text-nowrap flex items-center', result.seeders > 20 ? 'text-green-600' : result.seeders < 5 ? 'text-red-600' : 'text-yellow-600')}>{result.seeders} Seeders</span>
-                      <span class='text-nowrap flex items-center text-white/80'>{fastPrettyBytes(result.size)}</span>
-                      <span class='text-nowrap flex items-center text-white/80'>{since(new Date(result.date))}</span>
+                      <span class='text-nowrap flex items-center text-primary/80'>{fastPrettyBytes(result.size)}</span>
+                      <span class='text-nowrap flex items-center text-primary/80'>{since(new Date(result.date))}</span>
                     </div>
                     <div class='flex ml-auto flex-row-reverse'>
                       {#each sanitiseTerms(result.parseObject) as { text, color }, i (i)}
@@ -332,7 +332,7 @@
           {/if}
           {#await searchResult}
             {#each Array.from({ length: 12 }) as _, i (i)}
-              <div class='p-3 h-[106px] flex cursor-pointer mb-2 relative rounded-md overflow-hidden bg-neutral-950 flex-col justify-between [content-visibility:auto] [contain-intrinsic-height:auto_106px]'>
+              <div class='p-3 h-[106px] flex cursor-pointer mb-2 relative rounded-md overflow-hidden bg-muted flex-col justify-between [content-visibility:auto] [contain-intrinsic-height:auto_106px]'>
                 <div class='h-4 w-40 bg-primary/5 animate-pulse rounded mt-2' />
                 <div class='bg-primary/5 animate-pulse rounded h-2 w-28 mt-1' />
                 <div class='flex justify-between mb-1'>

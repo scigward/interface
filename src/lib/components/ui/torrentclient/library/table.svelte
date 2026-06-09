@@ -151,7 +151,7 @@
 <div class='flex gap-2'>
   <div class='flex items-center scale-parent relative pb-2 overflow-visible grow'>
     <Input
-      class='pl-9 bg-black select:bg-accent select:text-accent-foreground shadow-sm no-scale placeholder:opacity-50'
+      class='pl-9 bg-background select:bg-accent select:text-accent-foreground shadow-sm no-scale placeholder:opacity-50'
       placeholder='Search by Torrent Name...'
       bind:value={$filterValue} />
     <MagnifyingGlass class='h-4 w-4 shrink-0 opacity-50 absolute left-3 text-muted-foreground z-10 pointer-events-none' />
@@ -198,7 +198,7 @@
     <Table.Header class='px-5'>
       {#each $headerRows as headerRow, i (i)}
         <Subscribe rowAttrs={headerRow.attrs()}>
-          <Table.Row class='sticky top-0 bg-black z-[2]'>
+          <Table.Row class='sticky top-0 bg-background z-[2]'>
             {#each headerRow.cells as cell (cell.id)}
               <Subscribe
                 attrs={cell.attrs()}

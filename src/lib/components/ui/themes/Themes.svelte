@@ -29,7 +29,7 @@
 <div class='flex flex-col gap-2 pt-3'>
   {#await themesRes}
     {#each Array.from({ length: 2 }) as _, i (i)}
-      <div class='bg-neutral-950 rounded-md px-7 py-4 gap-4 flex flex-col text-xs'>
+      <div class='bg-muted rounded-md px-7 py-4 gap-4 flex flex-col text-xs'>
         <div class='flex h-8 items-center'>
           <div class='w-12'>
             <div class='bg-primary/5 rounded h-2.5 w-4 animate-pulse' />
@@ -52,7 +52,7 @@
   {:then themes}
     {#if themes?.anime?.[0]?.animethemes?.length}
       {#each themes.anime[0].animethemes as theme (theme.id)}
-        <div class='bg-neutral-950 rounded-md px-7 py-4 gap-4 flex flex-col text-xs'>
+        <div class='bg-muted rounded-md px-7 py-4 gap-4 flex flex-col text-xs'>
           <div class='flex h-8 items-center'>
             <div class='w-12'>
               {theme.type}

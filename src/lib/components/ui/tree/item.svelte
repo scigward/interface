@@ -30,7 +30,7 @@
   <button class='w-full hover:bg-accent hover:text-accent-foreground flex select-none items-center rounded-sm py-2.5 leading-none font-bold text-sm outline-none pl-4 cursor-pointer text-left my-0.5'
     on:click={handleClick}
     on:click
-    class:!bg-white={isActive || active} class:!text-black={isActive || active}
+    class:!bg-primary={isActive || active} class:!text-background={isActive || active}
     class:opacity-30={activeSibling}
     data-open={isActive}>
     {#if hasSub}

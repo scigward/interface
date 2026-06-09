@@ -60,17 +60,17 @@
   class:backplate-fly={isFlying}
   class:backplate-spin={isSpinning}>
   {#each Array.from({ length: 6 }) as _, i (i)}
-    <div class='flex flex-row w-full font-molot font-bold leading-[0.8] ml-[--ml-offset] -rotate-12 text-white mt-64' style:--ml-offset='calc((-1 * {(i) * 600}px) - 10vw)'>
+    <div class='flex flex-row w-full font-molot font-bold leading-[0.8] ml-[--ml-offset] -rotate-12 text-primary mt-64' style:--ml-offset='calc((-1 * {(i) * 600}px) - 10vw)'>
       {#each Array.from({ length: 4 }) as _, i (i)}
         <div>
           <div class='bg-striped'>
-            <div class='text-[24rem] tracking-wide animate-marquee bg-black mix-blend-multiply'>
+            <div class='text-[24rem] tracking-wide animate-marquee bg-background mix-blend-multiply'>
               HAYASE.06&nbsp;
             </div>
           </div>
           <div class='bg-striped-muted'>
-            <div class='flex pl-1 animate-marquee bg-black mix-blend-multiply'>
-              <div class='rounded py-2 px-3 mt-1 mb-[2.5px] mr-2 ml-1 text-black bg-white flex items-center leading-[0.9]'>
+            <div class='flex pl-1 animate-marquee bg-background mix-blend-multiply'>
+              <div class='rounded py-2 px-3 mt-1 mb-[2.5px] mr-2 ml-1 text-background bg-primary flex items-center leading-[0.9]'>
                 TORRENTING<br />MADE<br />SIMPLE
               </div>
               <div class='text-[5.44rem] bg-striped-muted tracking-wider'>

@@ -152,13 +152,13 @@
         <div class='bg-[rgba(217,217,217,0.4)] absolute left-0 w-full h-0.5 transition-[height] duration-75' class:h-1={active} />
         <div class='bg-[rgba(217,217,217,0.4)] absolute left-0 w-full h-0.5 transition-[height] duration-75 transform-gpu' class:h-1={active} style:--tw-translate-x='{skewclamp(scale * (buffer - offset)) - 100}%' />
         <div class='bg-[rgba(217,217,217,0.4)] absolute left-0 w-full h-0.5 transition-[height] duration-75 transform-gpu' class:h-1={active} style:--tw-translate-x='{skewclamp(scale * (seek - offset)) - 100}%' />
-        <div class='bg-white absolute w-full left-0 h-0.5 transition-[height] duration-75 transform-gpu' class:h-1={active} style:--tw-translate-x='{skewclamp(scale * (progress - offset)) - 100}%' />
+        <div class='bg-primary absolute w-full left-0 h-0.5 transition-[height] duration-75 transform-gpu' class:h-1={active} style:--tw-translate-x='{skewclamp(scale * (progress - offset)) - 100}%' />
       </div>
     </div>
   {/each}
   {#if !seeking && seek}
     <div class='absolute w-full transform-gpu flex pointer-events-none group-hover/seekbar:opacity-100 opacity-0 bottom-9' style:--tw-translate-x='clamp(70px, {clamp(seek)}%, calc(100% - 70px))'>
-      <div class='-translate-x-1/2 text-sm leading-none text-nowrap flex flex-col justify-center items-center gap-1 rounded-lg bg-neutral-200 border-white border py-2 px-3 has-[img]:p-0 text-zinc-900 shadow-lg'>
+      <div class='-translate-x-1/2 text-sm leading-none text-nowrap flex flex-col justify-center items-center gap-1 rounded-lg bg-foreground border-primary border py-2 px-3 has-[img]:p-0 text-background shadow-lg'>
         {#await thumbnailer.getThumbnail(seekIndex)}
           {#if title}
             <div class='max-w-24 text-ellipsis overflow-clip'>{title}</div>
@@ -168,9 +168,9 @@
           {#if src}
             <img {src} alt='thumbnail' class='w-40 rounded-lg min-h-10' loading='lazy' decoding='async' />
             {#if title}
-              <div class='max-w-24 text-ellipsis overflow-clip absolute top-0 bg-white py-1 px-2 rounded-b-lg'>{title}</div>
+              <div class='max-w-24 text-ellipsis overflow-clip absolute top-0 bg-primary py-1 px-2 rounded-b-lg'>{title}</div>
             {/if}
-            <div class='absolute bottom-0 bg-white py-1 px-2 rounded-t-lg'>{toTS(seekTime)}</div>
+            <div class='absolute bottom-0 bg-primary py-1 px-2 rounded-t-lg'>{toTS(seekTime)}</div>
           {:else}
             {#if title}
               <div class='max-w-24 text-ellipsis overflow-clip'>{title}</div>

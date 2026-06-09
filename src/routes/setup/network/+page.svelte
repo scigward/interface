@@ -78,15 +78,15 @@
   </SettingCard>
   <SettingCard class='bg-transparent' let:id title='Transfer Speed Limit' description='Download/Upload speed limit for torrents, higher values increase CPU usage, and values higher than your storage write speeds will quickly fill up RAM.'>
     <div class='flex items-center relative scale-parent border border-input rounded-md self-baseline'>
-      <Input type='number' inputmode='numeric' pattern='[0-9]*.?[0-9]*' min='1' max='50' step='0.1' bind:value={$settings.torrentSpeed} {id} class='w-32 shrink-0 bg-background pr-12 border-0 no-scale' />
+      <Input type='number' inputmode='numeric' pattern='[0-9]*.?[0-9]*' min='1' max='50' step='0.1' bind:value={$settings.torrentSpeed} {id} class='w-32 shrink-0 pr-12 border-0 no-scale' />
       <div class='shrink-0 absolute right-3 z-10 pointer-events-none text-sm leading-5'>Mb/s</div>
     </div>
   </SettingCard>
   <SettingCard class='bg-transparent' let:id title='Max Number of Connections' description='Number of peers per torrent. Higher values will increase download speeds but might quickly fill up available ports if your ISP limits the maximum allowed number of open connections.'>
-    <Input type='number' inputmode='numeric' pattern='[0-9]*' min='1' max='512' bind:value={$settings.maxConns} {id} class='w-32 shrink-0 bg-background' />
+    <Input type='number' inputmode='numeric' pattern='[0-9]*' min='1' max='512' bind:value={$settings.maxConns} {id} class='w-32 shrink-0' />
   </SettingCard>
   <SettingCard class='bg-transparent' let:id title='Forwarded Torrent Port' description='Forwarded port used for incoming torrent connections. 0 automatically finds an open unused port. Change this to a specific port if you forwarded manually, or if you use a VPN.'>
-    <Input type='number' inputmode='numeric' pattern='[0-9]*' min='0' max='65536' bind:value={$settings.torrentPort} {id} class='w-32 shrink-0 bg-background' />
+    <Input type='number' inputmode='numeric' pattern='[0-9]*' min='0' max='65536' bind:value={$settings.torrentPort} {id} class='w-32 shrink-0' />
   </SettingCard>
   {#if !SUPPORTS.isIOS}
     {#if !SUPPORTS.isAndroid}
@@ -94,7 +94,7 @@
         <Switch {id} bind:checked={$settings.enableDoH} />
       </SettingCard>
       <SettingCard class='bg-transparent' let:id title='DNS Over HTTPS URL' description='What URL to use for querying DNS Over HTTPS.'>
-        <Input type='url' bind:value={$settings.doHURL} {id} class='w-80 shrink-0 bg-background' />
+        <Input type='url' bind:value={$settings.doHURL} {id} class='w-80 shrink-0' />
       </SettingCard>
     {:else}
       <SettingCard class='bg-transparent' title='Use DNS Over HTTPS' description="Enables DNS Over HTTPS, useful if your ISP blocks certain domains. On Android this is a system setting, which cannot be changed here. It's usually named 'Private DNS' or 'DNS over HTTPs'.">

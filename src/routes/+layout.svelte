@@ -72,7 +72,7 @@
 
 <svelte:document bind:fullscreenElement />
 
-<div class={cn('size-full flex flex-col bg-black relative overflow-clip')} id='root' data-input={$inputType} on:contextmenu|preventDefault>
+<div class={cn('size-full flex flex-col bg-background relative overflow-clip')} id='root' data-input={$inputType} on:contextmenu|preventDefault>
   <ProgressBar zIndex={100} bind:complete {displayThresholdMs} />
   <Toaster position='top-right' expand={true} />
 

@@ -96,7 +96,7 @@
   <Dialog.Content class='absolute bg-transparent border-none p-0 shadow-none size-full overflow-hidden max-w-full'>
     <div on:pointerdown|self={close} on:wheel|stopPropagation class='size-full flex justify-center items-center flex-col overflow-y-scroll text-[6px] lg:text-xs' use:dragScroll>
       {#if showKeybinds}
-        <div class='bg-black py-3 px-4 rounded-md text-sm lg:text-lg font-bold mb-4 capitalize'>
+        <div class='bg-background py-3 px-4 rounded-md text-sm lg:text-lg font-bold mb-4 capitalize'>
           {keybindDesc ?? 'Drag and drop binds to change them'}
         </div>
         <Keybinds let:prop={item} autosave={true} clickable={true} on:pointerleave={() => { keybindDesc = null }} pointerOver={(item, label) => { keybindDesc = (item?.desc ? `${label} : ${item.desc}` : 'Drag and drop binds to change them') }}>

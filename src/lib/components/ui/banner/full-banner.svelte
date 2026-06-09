@@ -84,7 +84,7 @@
   {/if}
   <div class='lg:pl-5 pb-2 grid grid-cols-1 lg:grid-cols-2 mt-auto w-full max-h-full' style:--custom={current.coverImage?.color ?? '#fff'} style:--red={r} style:--green={g} style:--blue={b}>
     <div class='w-full flex flex-col items-center text-center lg:items-start lg:text-left justify-end gap-4'>
-      <a class='text-white font-black text-3xl lg:text-4xl line-clamp-2 w-[900px] max-w-[85%] leading-tight text-balance fade-in hover:text-neutral-300 hover:underline cursor-pointer text-shadow-lg' href='/app/anime/{current.id}'>
+      <a class='text-primary font-black text-3xl lg:text-4xl line-clamp-2 w-[900px] max-w-[85%] leading-tight text-balance fade-in hover:text-muted-foreground hover:underline cursor-pointer text-shadow-lg' href='/app/anime/{current.id}'>
         {#await episodesCached(current.id) then metadata}
           {@const src = metadata?.logos?.sort((a, b) => b.vote_average - a.vote_average).find(i => i.iso_639_1 === 'en' && i.aspect_ratio > 1.2)?.file_path}
           {#if src}
@@ -126,7 +126,7 @@
       </div>
     </div>
     <div class='flex flex-col self-end lg:items-end items-center lg:pr-5 w-full min-w-0'>
-      <div class='text-white/70 line-clamp-2 lg:line-clamp-3 text-balance max-w-[90%] lg:max-w-[75%] text-xs lg:text-sm text-center lg:text-right fade-in pt-3 text-shadow-lg'>
+      <div class='text-primary/70 line-clamp-2 lg:line-clamp-3 text-balance max-w-[90%] lg:max-w-[75%] text-xs lg:text-sm text-center lg:text-right fade-in pt-3 text-shadow-lg'>
         {desc(current)}
       </div>
       <div class='hidden lg:flex gap-2 items-center lg:self-end pt-4 flex-nowrap max-w-full lg:place-content-end'>
@@ -142,7 +142,7 @@
     {#each shuffled as media (media.id)}
       {@const active = current === media}
       <div class='pt-2 pb-4' class:cursor-pointer={!active} use:click={() => setCurrent(media)} use:tabindex>
-        <div class='bg-white/20 mr-2 progress-badge overflow-clip rounded' class:active style='height: 4px;' style:width={active ? '3rem' : '1.5rem'}>
+        <div class='bg-primary/20 mr-2 progress-badge overflow-clip rounded' class:active style='height: 4px;' style:width={active ? '3rem' : '1.5rem'}>
           <div class='progress-content h-full transform-gpu w-full group-hover/banner:![transform:translate3d(0,0,0)] group-hover/banner:![animation-play-state:paused]' class:bg-custom={active} on:animationend={active ? advance : undefined} />
         </div>
       </div>

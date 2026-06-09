@@ -15,7 +15,7 @@
 <TabsPrimitive.List
   class={cn(
     orientation === 'horizontal' ? 'h-9 items-center justify-center' : 'flex-col gap-1 max-w-72 w-full',
-    'bg-muted text-muted-foreground rounded-lg p-1 inline-flex',
+    'bg-secondary text-muted-foreground rounded-lg p-1 inline-flex',
     className
   )}
   {...$$restProps}

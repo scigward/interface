@@ -195,7 +195,7 @@
                           {episode.title?.userPreferred}
                         </div>
                         <div class='ml-auto mr-1 text-nowrap'>#{episode.episode}</div>
-                        <div class='text-neutral-400 group-select:text-neutral-200'>{format(episode.airTime, 'HH:mm')}</div>
+                        <div class='text-muted-foreground group-select:text-foreground'>{format(episode.airTime, 'HH:mm')}</div>
                       </ButtonPrimitive.Root>
                     {/each}
                   </Drawer.Footer>
@@ -210,7 +210,7 @@
                   {@const status = _list(episode)}
                   {@const progress = _progress(episode) ?? 0}
                   <Tooltip.Root openDelay={100}>
-                    <Tooltip.Trigger class='text-neutral-500 w-full text-left px-3 mt-1.5' let:builder asChild>
+                    <Tooltip.Trigger class='text-muted-foreground w-full text-left px-3 mt-1.5' let:builder asChild>
                       <ButtonPrimitive.Root builders={[builder]} class={cn('flex items-center h-4 w-full group mt-1.5 px-3', +episode.airTime < Date.now() && 'opacity-30')} href='/app/anime/{episode.id}'>
                         <div class='font-medium text-nowrap text-ellipsis overflow-hidden pr-2' title={episode.title?.userPreferred}>
                           {#if status}
@@ -223,7 +223,7 @@
                           {episode.title?.userPreferred}
                         </div>
                         <div class='ml-auto mr-1 text-nowrap hidden xl:inline-flex'>#{episode.episode}</div>
-                        <div class='text-neutral-400 group-select:text-neutral-200 ml-auto xl:ml-0'>{format(episode.airTime, 'HH:mm')}</div>
+                        <div class='text-muted-foreground group-select:text-foreground ml-auto xl:ml-0'>{format(episode.airTime, 'HH:mm')}</div>
                       </ButtonPrimitive.Root>
                     </Tooltip.Trigger>
                     <Tooltip.Content sameWidth={true} class='p-0 overflow-clip'>
@@ -233,14 +233,14 @@
                 {/each}
                 {#if episodes.length > 6}
                   <Tooltip.Root openDelay={100}>
-                    <Tooltip.Trigger class='text-neutral-500 w-full text-left px-3 mt-1.5'>
+                    <Tooltip.Trigger class='text-muted-foreground w-full text-left px-3 mt-1.5'>
                       + {episodes.length - 5} more...
                     </Tooltip.Trigger>
                     <Tooltip.Content sameWidth={true} class='text-center gap-1.5'>
                       {#each episodes.slice(5) as episode, i (i)}
                         {@const status = _list(episode)}
                         {@const progress = _progress(episode) ?? 0}
-                        <ButtonPrimitive.Root class={cn('flex items-center h-4 w-full group', +episode.airTime < Date.now() && 'text-neutral-500')} href='/app/anime/{episode.id}'>
+                        <ButtonPrimitive.Root class={cn('flex items-center h-4 w-full group', +episode.airTime < Date.now() && 'text-muted-foreground')} href='/app/anime/{episode.id}'>
                           <div class='font-medium text-nowrap text-ellipsis overflow-hidden pr-2' title={episode.title?.userPreferred}>
                             {#if status}
                               {#if progress >= episode.episode}
@@ -252,7 +252,7 @@
                             {episode.title?.userPreferred}
                           </div>
                           <div class='ml-auto mr-1 text-nowrap hidden xl:inline-flex'>#{episode.episode}</div>
-                          <div class='text-neutral-400 group-select:text-neutral-900 ml-auto xl:ml-0'>{format(episode.airTime, 'HH:mm')}</div>
+                          <div class='text-muted-foreground group-select:text-foreground ml-auto xl:ml-0'>{format(episode.airTime, 'HH:mm')}</div>
                         </ButtonPrimitive.Root>
                       {/each}
                     </Tooltip.Content>

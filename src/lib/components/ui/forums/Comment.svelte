@@ -28,7 +28,7 @@
   const viewer = client.client.viewer
 </script>
 
-<div class='rounded-md {depth % 2 === 1 ? 'bg-black' : 'bg-neutral-950'} text-secondary-foreground flex w-full py-4 flex-col'>
+<div class='rounded-md {depth % 2 === 1 ? 'bg-background' : 'bg-muted'} text-secondary-foreground flex w-full py-4 flex-col'>
   <div class='flex w-full justify-between text-xl px-6'>
     <div class='font-bold mb-2 line-clamp-1 flex leading-none items-center text-[16px]'>
       {#if comment.user}

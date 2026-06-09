@@ -63,7 +63,7 @@
         </Button>
         <Textarea
           bind:value={message}
-          class='h-auto px-3 w-full flex-grow-1 resize-none min-h-0 border-0 bg-background select:bg-accent select:text-accent-foreground [field-sizing:content]'
+          class='h-auto px-3 w-full flex-grow-1 resize-none min-h-0 border-0 select:bg-accent select:text-accent-foreground [field-sizing:content]'
           autocomplete='off'
           maxlength={256}
           placeholder='Message' on:keydown={checkInput} />

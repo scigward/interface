@@ -234,7 +234,7 @@
 </script>
 
 <div class='flex flex-col h-full overflow-y-auto overflow-x-clip -ml-14 pl-14 min-w-0 grow' use:dragScroll use:infiniteScroll>
-  <div class='sticky top-0 z-20 px-2 sm:px-10 pointer-events-auto shrink-0 overflow-clip bg-black pt-5'>
+  <div class='sticky top-0 z-20 px-2 sm:px-10 pointer-events-auto shrink-0 overflow-clip bg-background pt-5'>
     <div class='flex flex-wrap'>
       {#if !$breakpoints.md}
         <div class='grid items-center min-w-0 flex-1 p-2'>
@@ -243,7 +243,7 @@
           </div>
           <div class='flex items-center scale-parent relative'>
             <Input
-              class='pl-9 border-0 bg-background select:bg-accent select:text-accent-foreground shadow-sm no-scale placeholder:opacity-50 capitalize'
+              class='pl-9 border-0 select:bg-accent select:text-accent-foreground shadow-sm no-scale placeholder:opacity-50 capitalize'
               placeholder='Any'
               id='animeName' type='text'
               autocomplete='on'
@@ -275,7 +275,7 @@
             </div>
             <div class='flex items-center scale-parent relative'>
               <Input
-                class='pl-9 border-0 bg-background select:bg-accent select:text-accent-foreground shadow-sm no-scale placeholder:opacity-50 capitalize'
+                class='pl-9 border-0 select:bg-accent select:text-accent-foreground shadow-sm no-scale placeholder:opacity-50 capitalize'
                 placeholder='Any'
                 id='animeName' type='text'
                 autocomplete='on'

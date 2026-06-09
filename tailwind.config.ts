@@ -51,11 +51,9 @@ const config: Config = {
           'backdrop-fade': (value) => ({
             '-webkit-backdrop-filter': `blur(${value})`,
             'backdrop-filter': `blur(${value})`,
-            '-webkit-mask-image':
-  'linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%), linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
+            '-webkit-mask-image': 'linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%), linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
             '-webkit-mask-composite': 'source-in',
-            'mask-image':
-  'linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%), linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
+            'mask-image': 'linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%), linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
             'mask-composite': 'intersect'
           })
         },

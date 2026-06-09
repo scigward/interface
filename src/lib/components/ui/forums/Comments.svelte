@@ -24,7 +24,7 @@
 <Pagination {count} {perPage} bind:currentPage let:pages let:hasNext let:hasPrev let:range let:setPage siblingCount={1}>
   {#if $comments.fetching}
     {#each Array.from({ length: 4 }) as _, i (i)}
-      <div class='px-4 py-[18px] shrink-0 h-28 w-full bg-neutral-950 rounded-md flex flex-col'>
+      <div class='px-4 py-[18px] shrink-0 h-28 w-full bg-muted rounded-md flex flex-col'>
         <div class='mb-3 h-2 w-[150px] bg-primary/5 animate-pulse rounded' />
         <div class='bg-primary/5 animate-pulse rounded h-1.5 w-28 mb-3' />
         <div class='bg-primary/5 animate-pulse rounded h-1.5 w-20' />

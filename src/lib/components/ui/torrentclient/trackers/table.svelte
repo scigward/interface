@@ -49,7 +49,7 @@
     <Table.Header class='px-5'>
       {#each $headerRows as headerRow, i (i)}
         <Subscribe rowAttrs={headerRow.attrs()}>
-          <Table.Row class='sticky top-0 bg-black z-[2]'>
+          <Table.Row class='sticky top-0 bg-background z-[2]'>
             {#each headerRow.cells as cell (cell.id)}
               <Subscribe
                 attrs={cell.attrs()}
