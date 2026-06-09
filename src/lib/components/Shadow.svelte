@@ -17,6 +17,7 @@
   p, details {
     margin-block-start: .5em;
     margin-block-end: .5em;
+    white-space: pre-wrap;
   }
   img, video {
     max-width: 100%;
