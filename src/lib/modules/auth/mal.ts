@@ -108,8 +108,8 @@ export default new class MALSync {
   auth = persisted<MALOAuth | undefined>('malAuth', undefined)
   viewer = persisted<ResultOf<typeof UserFrag> | undefined>('malViewer', undefined)
   userlist = writable<Record<string, ResultOf<typeof FullMediaList>>>({}) // al id to al mapped mal entry
-  malToAL = persisted<Record<string, string>>('malToAL', {})
-  ALToMal = persisted<Record<string, string>>('ALToMal', {})
+  malToAL = persisted<Record<number, number>>('malToAL', {})
+  ALToMal: Record<number, number> = {}
 
   continueIDs = readable<number[]>([], set => {
     let oldvalue: number[] = []
@@ -302,7 +302,6 @@ export default new class MALSync {
     localStorage.removeItem('malViewer')
     localStorage.removeItem('malAuth')
     localStorage.removeItem('malToAL')
-    localStorage.removeItem('ALToMal')
     native.restart()
   }
 
@@ -384,17 +383,12 @@ export default new class MALSync {
 
       if (!alId) continue
 
-      cached[malId] = alId.toString()
+      cached[malId] = alId
+      this.ALToMal[alId] = malId
       entryMap[alId] = this._malEntryToAl(item.node.my_list_status, item.node.id)
     }
 
     this.malToAL.set(cached)
-
-    const rev: Record<string, string> = {}
-    for (const [malId, alId] of Object.entries(cached)) {
-      rev[alId] = malId
-    }
-    this.ALToMal.set(rev)
 
     debug('MAL user list entries mapped to AL IDs:', Object.keys(entryMap))
 
@@ -412,27 +406,30 @@ export default new class MALSync {
     }
   }
 
-  async _getMalId (alId: number): Promise<string | undefined> {
-    const malId = get(this.ALToMal)[alId]
+  async _getMalId (alId: number): Promise<number | undefined> {
+    const malId = this.ALToMal[alId]
     if (malId) return malId
 
     const res = await mappings(alId)
     if (!res?.mal_id) return
 
-    const malIdStr = res.mal_id.toString()
-    this.ALToMal.update(m => ({ ...m, [alId]: malIdStr }))
-    this.malToAL.update(m => ({ ...m, [malIdStr]: alId.toString() }))
+    const malIdStr = res.mal_id
+    this.ALToMal[alId] = malIdStr
+    this.malToAL.update(m => ({ ...m, [malIdStr]: alId }))
     return malIdStr
   }
 
-  async _getAlId (malId: number): Promise<string | undefined> {
+  async _getAlId (malId: number): Promise<number | undefined> {
     const alId = get(this.malToAL)[malId]
     if (alId) return alId
 
     const res = await mappingsByMalId(malId)
     if (!res?.anilist_id) return
 
-    return res.anilist_id.toString()
+    const alIdStr = res.anilist_id
+    this.malToAL.update(m => ({ ...m, [malId]: alIdStr }))
+    this.ALToMal[alIdStr] = malId
+    return alIdStr
   }
 
   hasAuth = derived(this.viewer, (viewer) => {
