@@ -36,19 +36,19 @@
       },
       ...device
     }
-    saveFile(info, 'hayase-device-info')
+    await saveFile(info, 'hayase-device-info')
   }
 
   async function logs () {
     const logs = await native.getLogs()
-    saveFile(logs, 'hayase-logs', 'ansi')
+    await saveFile(logs, 'hayase-logs', 'ansi')
   }
 
   async function settingsFile () {
     const set = { ...$settings }
     set.nzbPassword = '***'
     set.nzbLogin = '***'
-    saveFile(set, 'hayase-settings')
+    await saveFile(set, 'hayase-settings')
   }
 
   async function torrent () {
@@ -63,7 +63,7 @@
       native.protocolStatus(hash)
     ])
 
-    saveFile({ storage: fastPrettyBytes(storage), info, trackers, protocol }, 'hayase-torrent-capabilities')
+    await saveFile({ storage: fastPrettyBytes(storage), info, trackers, protocol }, 'hayase-torrent-capabilities')
   }
 
   async function media () {
@@ -100,7 +100,7 @@
       video.push('audioTracks')
     }
 
-    saveFile({ video, decoder }, 'hayase-media-capabilities')
+    await saveFile({ video, decoder }, 'hayase-media-capabilities')
   }
 </script>
 

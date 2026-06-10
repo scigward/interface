@@ -387,7 +387,17 @@ export function saveFile (data: string | Record<string, unknown>, name: string, 
   a.download = name + '.' + ext
   a.click()
   URL.revokeObjectURL(a.href)
-  navigator.clipboard.writeText(data)
+  return navigator.clipboard.writeText(data)
+}
+
+export async function readFile () {
+  const input = document.createElement('input')
+  input.type = 'file'
+  input.accept = 'application/json'
+  input.click()
+  await new Promise((resolve) => { input.onchange = resolve })
+  if (!input.files || input.files.length === 0) return
+  return JSON.parse(await input.files[0]!.text())
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

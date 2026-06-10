@@ -8,7 +8,7 @@
   import urqlClient, { storage } from '$lib/modules/anilist/urql-client'
   import native from '$lib/modules/native'
   import { settings, SUPPORTS, debug } from '$lib/modules/settings'
-  import { saveFile } from '$lib/utils'
+  import { readFile, saveFile } from '$lib/utils'
 
   const debugOpts = {
     '': 'None',
@@ -19,8 +19,7 @@
 
   async function copyLogs () {
     try {
-      const logs = await native.getLogs()
-      saveFile(logs, 'hayase-logs', 'ansi')
+      await saveFile(await native.getLogs(), 'hayase-logs', 'ansi')
       toast.success('Copied to clipboard', {
         description: 'Copied log contents to clipboard'
       })
@@ -35,18 +34,7 @@
 
   async function importSettings () {
     try {
-      const input = document.createElement('input')
-      input.type = 'file'
-      input.accept = 'application/json'
-      input.click()
-      await new Promise((resolve) => {
-        input.onchange = () => resolve(null)
-      })
-      if (!input.files || input.files.length === 0) return
-      const file = input.files[0]!
-      const text = await file.text()
-      const imported = JSON.parse(text)
-      $settings = imported
+      $settings = await readFile()
       native.restart()
     } catch (error) {
       toast.error('Failed to import settings', {
@@ -54,9 +42,9 @@
       })
     }
   }
-  function exportSettings () {
+  async function exportSettings () {
     try {
-      saveFile($settings, 'hayase-settings')
+      await saveFile($settings, 'hayase-settings')
     } catch (error) {
       toast.error('Failed to export settings', {
         description: 'Failed to export settings to file.'

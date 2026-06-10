@@ -14,6 +14,8 @@
 </script> -->
 
 <script lang='ts'>
+  import { toast } from 'svelte-sonner'
+
   import SettingCard from '$lib/components/SettingCard.svelte'
   import { Button } from '$lib/components/ui/button'
   import { SingleCombo } from '$lib/components/ui/combobox'
@@ -25,7 +27,8 @@
   import * as ToggleGroup from '$lib/components/ui/toggle-group'
   // import native from '$lib/modules/native'
   import { navigate } from '$lib/modules/navigate'
-  import { settings, SUPPORTS } from '$lib/modules/settings'
+  import { defaults, settings, SUPPORTS } from '$lib/modules/settings'
+  import { readFile, saveFile } from '$lib/utils'
 
   const angle = {
     default: 'Default',
@@ -116,6 +119,36 @@
     ENGLISH: 'English (Attack on Titan)',
     NATIVE: 'Native (進撃の巨人)'
   } as const
+
+  function resetCustomTheme () {
+    $settings.customThemeColors = { ...defaults.customThemeColors }
+  }
+
+  async function exportCustomTheme () {
+    try {
+      await saveFile($settings.customThemeColors, 'hayase-custom-theme')
+    } catch (error) {
+      toast.error('Failed to copy custom theme', {
+        description: (error as Error).message
+      })
+    }
+  }
+
+  async function importCustomTheme () {
+    try {
+      const parsed = await readFile()
+      for (const k in parsed) {
+        if (!customVarDefs.some(({ key }) => key === k)) {
+          throw new Error('Invalid custom theme format')
+        }
+      }
+      $settings.customThemeColors = { ...defaults.customThemeColors, ...parsed }
+    } catch (error) {
+      toast.error('Failed to paste custom theme', {
+        description: (error as Error).message
+      })
+    }
+  }
 </script>
 
 <div class='font-weight-bold text-xl font-bold'>Display Preferences</div>
@@ -164,6 +197,11 @@
           <span>{def.label}</span>
         </div>
       {/each}
+    </div>
+    <div class='flex gap-2 mt-4'>
+      <Button variant='destructive' on:click={resetCustomTheme}>Reset</Button>
+      <Button variant='secondary' on:click={importCustomTheme}>Import</Button>
+      <Button variant='secondary' on:click={exportCustomTheme}>Export</Button>
     </div>
   </SettingCard>
 {/if}
