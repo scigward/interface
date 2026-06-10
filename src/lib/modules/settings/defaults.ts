@@ -42,7 +42,7 @@ export default {
   androidStorageType: 'cache',
   showHentai: false,
   hideSpoilers: false,
-  theme: 'default' as 'default' | 'rose' | 'ocean' | 'forest' | 'amber' | 'lavender' | 'system' | 'custom',
+  theme: 'default' as 'default' | 'light' | 'ocean' | 'forest' | 'amber' | 'lavender' | 'system' | 'custom',
   customThemeColors: {
     '--custom-background': '#000000',
     '--custom-foreground': '#fafafa',
