@@ -117,7 +117,7 @@ class CodeManager {
     const workerPromises = configIDs.map((id, index) => {
       const code = codeList[index]!
       debug('Loading worker for', id)
-      return this._loadWorker(code, id)
+      return this._loadWorker(code, id, configs[index]!.type)
     })
 
     await Promise.allSettled(workerPromises)
@@ -151,7 +151,7 @@ class CodeManager {
       }
 
       try {
-        await this._loadWorker(code, config.id)
+        await this._loadWorker(code, config.id, config.type)
         set(config.id, code)
         debug('Loaded and cached code for', config.id)
       } catch (e) {
@@ -164,12 +164,12 @@ class CodeManager {
     return invalidIDs
   }
 
-  async _loadWorker (code: string, id: string) {
+  async _loadWorker (code: string, id: string, type: 'torrent' | 'nzb' | 'subtitle') {
     debug('Creating worker for', id)
     const Loader = wrap<typeof extensionLoader>(new Worker({ name: id })) as unknown as Remote<typeof extensionLoader>
 
     try {
-      await Loader.construct(code)
+      await Loader.construct(code, type)
       await Loader.loaded()
       if (this.extensions.has(id)) {
         debug('Releasing previous worker for', id)
