@@ -9,10 +9,8 @@ import { settings, type videoResolutions } from '../settings'
 
 import { storage } from './storage'
 
-import type { NZBSource, TorrentResult, TorrentSource, SubtitleSource } from './types'
-import type { ExtensionWorker } from './worker'
+import type { TorrentResult } from './types'
 import type { EpisodesResponse, Titles, Episode } from '../anizip/types'
-import type { Remote } from 'abslink'
 import type { AnitomyResult } from 'anitomyscript'
 
 import { dev } from '$app/environment'
@@ -214,7 +212,7 @@ export const extensions = new class Extensions {
   async * torrentResults ({ media, episode, resolution }: { media: Media, episode: number, resolution: keyof typeof videoResolutions }) {
     debug(`Fetching results for ${media.id}:${media.title?.userPreferred} ${episode} ${resolution}`)
     await storage.ready
-    const extensions = storage.codeManager.extensions as Map<string, Remote<ExtensionWorker<TorrentSource>>>
+    const extensions = storage.codeManager.extensions
     if (!extensions.size) {
       debug('No torrent sources configured')
       throw new Error('No torrent sources configured. Add extensions in settings.')
@@ -246,7 +244,6 @@ export const extensions = new class Extensions {
       const parseObjects = await anitomyscript(results.map(({ title }) => title))
       parseObjects.forEach((parseObject, index) => {
         results[index]!.parseObject = parseObject
-        results[index]!.hash = results[index]!.hash.toLowerCase()
       })
       return results
     }
@@ -264,7 +261,7 @@ export const extensions = new class Extensions {
 
       const createTask = (fn: typeof worker.single | typeof worker.movie | typeof worker.batch) =>
         tasks.push(raceWithHandler(
-          fn(options, extOptions),
+          fn(options, extOptions) as Promise<TorrentResult[]>,
 
           async value => {
             const vals = navigator.onLine && shouldUpdatePeers && value.length
@@ -312,7 +309,7 @@ export const extensions = new class Extensions {
     const extopts = get(extensionOptions)
     const configs = get(savedConfigs)
 
-    const extensions = storage.codeManager.extensions as Map<string, Remote<ExtensionWorker<NZBSource>>>
+    const extensions = storage.codeManager.extensions
 
     const options = await this._getQueryOptions(media, episode)
 
@@ -321,8 +318,8 @@ export const extensions = new class Extensions {
       try {
         return await raceTimeout(
           Array.isArray(fileInfo)
-            ? worker.batch({ ...options, hash, files: fileInfo, name }, extopts[id].options)
-            : worker.single({ ...options, hash, file: fileInfo, name }, extopts[id].options)
+            ? worker.batch({ ...options, hash, files: fileInfo, name }, extopts[id].options) as Promise<string | undefined>
+            : worker.single({ ...options, hash, file: fileInfo, name }, extopts[id].options) as Promise<string | undefined>
           , 10_000)
       } catch (error) {
         throw new ExtensionError(error as Error, id)
@@ -344,14 +341,14 @@ export const extensions = new class Extensions {
     const extopts = get(extensionOptions)
     const configs = get(savedConfigs)
 
-    const extensions = storage.codeManager.extensions as Map<string, Remote<ExtensionWorker<SubtitleSource>>>
+    const extensions = storage.codeManager.extensions
 
     const options = await this._getQueryOptions(media, episode)
 
     const { settled, errors } = await toSettled<ExtensionError, Array<{ url: string, language: string }> | undefined>(extensions.entries().map(async ([id, worker]) => {
       if (!extopts[id]?.enabled || configs[id]?.type !== 'subtitle') return
       try {
-        return await raceTimeout(worker.single(options, extopts[id].options), 10_000)
+        return await raceTimeout(worker.single(options, extopts[id].options) as Promise<Array<{ url: string, language: string }>>, 10_000)
       } catch (error) {
         throw new ExtensionError(error as Error, id)
       }
