@@ -1,5 +1,5 @@
-import { readdir, readFile, writeFile, glob } from 'node:fs/promises'
-import { join, basename } from 'node:path'
+import { readdir, readFile, writeFile, glob, copyFile } from 'node:fs/promises'
+import { join, basename, resolve } from 'node:path'
 import process from 'node:process'
 
 import staticAdapter from '@sveltejs/adapter-static'
@@ -89,11 +89,20 @@ const adapterWithFontPreload = (options = {}) => {
       try {
         const indexPath = join(outDir, 'index.html')
         const offlinePath = join(outDir, 'offline.html')
-        const indexHtml = /** @type {string} */ (await readFile(indexPath, 'utf-8'))
-        await writeFile(offlinePath, indexHtml, 'utf-8')
+        await copyFile(indexPath, offlinePath)
         console.log('Created offline.html for service worker offline fallback')
       } catch (error) {
         console.error('Error creating offline.html for service worker:', error)
+      }
+
+      // copy license file to build directory
+      try {
+        const src = resolve(import.meta.dirname, 'node_modules/.cache/license-deps.txt')
+        const dst = join(outDir, 'build/LICENSE.txt')
+        await copyFile(src, dst)
+        console.log('Copied license file to build directory')
+      } catch (error) {
+        console.error('Error copying license file to build directory:', error)
       }
     }
   }

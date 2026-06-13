@@ -1,4 +1,3 @@
-import { existsSync, copyFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
 import { sveltekit } from '@sveltejs/kit/vite'
@@ -27,21 +26,10 @@ export default defineConfig({
       thirdParty: {
         allow: '(MIT OR Apache-2.0 OR ISC OR BSD-3-Clause OR BSD-2-Clause OR MPL-2.0 OR LGPL-2.1 OR LGPL-2.1+)',
         // written early in generateBundle, sveltekit adapter recreates build/ after, so copy in closeBundle
-        output: resolve(import.meta.dirname, '.svelte-kit/license-deps.txt'),
+        output: resolve(import.meta.dirname, 'node_modules/.cache/license-deps.txt'),
         includeSelf: true
       }
     }),
-    // sveltekit adapter recreates build/ during closeBundle, so copy license after
-    {
-      name: 'finalize-license',
-      closeBundle: () => {
-        const src = resolve(import.meta.dirname, '.svelte-kit/license-deps.txt')
-        const dst = resolve(import.meta.dirname, 'build/LICENSE.txt')
-        if (existsSync(src)) {
-          copyFileSync(src, dst)
-        }
-      }
-    },
     viteStaticCopy({
       targets: [
         { // VITE IS DOG AND DOESNT SUPPORT DYNAMIC JSON IMPORTS
