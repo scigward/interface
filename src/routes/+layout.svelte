@@ -35,6 +35,7 @@
   onNavigate(({ to, complete, delta }) => {
     if (
       !document.startViewTransition ||
+      SUPPORTS.isUnderPowered ||
       (SUPPORTS.isIOS && delta != null) || // iOS has their own animations for back/forward navigation that conflict with view transitions, sasuga Apple
       fullscreenElement || // chrome can hang when trying to do view transitions while in fullscreen
       (to?.route.id === '/app/player' && SUPPORTS.isMobile) // same as above, but only on mobile since only it forces fullscreen
