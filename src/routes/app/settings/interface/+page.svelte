@@ -167,7 +167,7 @@
   <ToggleGroup.Root type='single' bind:value={$settings.theme} asChild let:builder variant='ghost'>
     <div class='grid sm:grid-cols-2 gap-3 w-full' use:builder.action {...builder} on:keydown|capture|stopPropagation={navigate}>
       {#each themes as { value, label } (value)}
-        <ToggleGroup.Item {value} class='{value === 'default' ? 'theme-default' : 'theme-' + value} h-auto py-8 relative'>
+        <ToggleGroup.Item {value} class='{value === 'default' ? 'theme-default' : 'theme-' + value} h-auto py-8 relative bg-background/40 select:bg-background/50'>
           <div class='absolute top-4 left-4 text-xl font-bold text-foreground'>{label}</div>
           <div class='flex flex-col items-center gap-1 px-6 max-w-[260px] pt-4'>
             <div class='text-xs text-foreground/85'>The quick brown fox</div>
