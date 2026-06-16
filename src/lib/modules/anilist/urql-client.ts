@@ -74,7 +74,7 @@ export default new class URQLClient extends Client {
 
     const lists = viewerRes.data.Viewer.mediaListOptions?.animeList?.customLists ?? []
     if (!lists.includes('Watched using Hayase')) {
-      await this.mutation(UpdateUser, { lists: [...lists, 'Watched using Hayase'] })
+      this.viewer.value = { viewer: (await this.mutation(UpdateUser, { lists: [...lists, 'Watched using Hayase'] })).data!.UpdateUser!, token, expires }
     }
   }
 

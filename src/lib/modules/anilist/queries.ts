@@ -262,10 +262,19 @@ export const UserLists = gql(`
 export const UpdateUser = gql(`
   mutation UpdateUser($lists: [String], $adult: Boolean, $language: UserTitleLanguage) {
     UpdateUser(animeListOptions: { customLists: $lists }, displayAdultContent: $adult, titleLanguage: $language) {
-      id
+      ...UserFrag,
+      mediaListOptions {
+        animeList {
+          customLists
+        }
+      },
+      options {
+        titleLanguage,
+        displayAdultContent
+      }
     }
   }
-`)
+`, [UserFrag])
 
 export const ScheduleMedia = gql(`
   fragment ScheduleMedia on Media @_unmask {

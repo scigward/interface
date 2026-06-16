@@ -5,7 +5,7 @@ import { derived, get, writable, type Writable } from 'svelte/store'
 
 import { nsfw } from '../settings/settings'
 
-import { AnimePage, Comments, DeleteEntry, DeleteThreadComment, Entry, Following, FollowingMany, type FullMedia, IDMedia, IDTitle, RecrusiveRelations, SaveThreadComment, Schedule, Search, Threads, ToggleFavourite, ToggleLike, UserLists } from './queries'
+import { AnimePage, Comments, DeleteEntry, DeleteThreadComment, Entry, Following, FollowingMany, type FullMedia, IDMedia, IDTitle, RecrusiveRelations, SaveThreadComment, Schedule, Search, Threads, ToggleFavourite, ToggleLike, UpdateUser, UserLists } from './queries'
 import urqlClient from './urql-client'
 import { currentSeason, currentYear, lastSeason, lastYear, nextSeason, nextYear } from './util'
 
@@ -40,9 +40,11 @@ class AnilistClient {
     })
   }
 
-  userlists = derived<typeof this.client.viewer, OperationResultState<ResultOf<typeof UserLists>> | undefined>(this.client.viewer, (store, set) => {
-    if (!store?.viewer?.id) return
-    return queryStore({ client: this.client, query: UserLists, variables: { id: store.viewer.id }, context: { requestPolicy: 'cache-and-network' } }).subscribe(set)
+  viewerID = derived(this.client.viewer, (store) => store?.viewer?.id)
+
+  userlists = derived<typeof this.viewerID, OperationResultState<ResultOf<typeof UserLists>> | undefined>(this.viewerID, (id, set) => {
+    if (!id) return
+    return queryStore({ client: this.client, query: UserLists, variables: { id }, context: { requestPolicy: 'cache-and-network' } }).subscribe(set)
   })
 
   continueIDs = derivedArray(this.userlists, $userLists => {
@@ -275,6 +277,12 @@ class AnilistClient {
   animePage (id: number) {
     debug('animePage: fetching anime page for ID', id)
     return queryStore({ client: this.client, query: AnimePage, variables: { id }, context: { requestPolicy: 'cache-and-network' } })
+  }
+
+  async updateUser (vars: VariablesOf<typeof UpdateUser>) {
+    const res = await client.client.mutation(UpdateUser, vars)
+    if (!res.data?.UpdateUser || !this.client.viewer.value) return
+    this.client.viewer.value = { ...this.client.viewer.value, viewer: res.data.UpdateUser }
   }
 
   _relationsTreeCache = new Map<number, RelationsStore>()

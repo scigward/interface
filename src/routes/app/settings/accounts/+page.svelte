@@ -19,7 +19,6 @@
   import { Switch } from '$lib/components/ui/switch'
   import * as Tooltip from '$lib/components/ui/tooltip'
   import { client } from '$lib/modules/anilist'
-  import { UpdateUser } from '$lib/modules/anilist/queries'
   import { authAggregator } from '$lib/modules/auth'
   import ksclient from '$lib/modules/auth/kitsu'
   import malclient from '$lib/modules/auth/mal'
@@ -62,7 +61,7 @@
 
   async function updateLanguage (language: string) {
     try {
-      await client.client.mutation(UpdateUser, { language: language as keyof typeof titleTypes })
+      await client.updateUser({ language: language as keyof typeof titleTypes })
     } catch (e) {
       console.error('Failed to update language', e)
     }
@@ -70,7 +69,7 @@
 
   async function updateAdult (adult: boolean) {
     try {
-      await client.client.mutation(UpdateUser, { adult })
+      await client.updateUser({ adult })
     } catch (e) {
       console.error('Failed to update NSFT setting', e)
     }
