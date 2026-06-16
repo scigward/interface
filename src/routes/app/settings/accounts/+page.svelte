@@ -71,7 +71,7 @@
     try {
       await client.updateUser({ adult })
     } catch (e) {
-      console.error('Failed to update NSFT setting', e)
+      console.error('Failed to update NSFW setting', e)
     }
   }
 
