@@ -193,6 +193,8 @@ export default new class MALSync {
         body = undefined
       }
 
+      if (SUPPORTS.isIOS) url = url.toString().replace(/^https/, 'cors')
+
       const res = await fetch(url, {
         method,
         headers,
