@@ -334,12 +334,9 @@
     if (initial) dispatch('loadedmetadata')
     readyState = 1
 
-    if (!paused) {
-      lastSyncPaused = true
-      await play()
-    }
-
     if (initial) dispatch('loadeddata')
+
+    if (!paused) play()
   }
 
   export async function play () {
