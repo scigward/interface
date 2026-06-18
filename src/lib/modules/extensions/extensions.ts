@@ -21,19 +21,12 @@ const exclusions: string[] = []
 
 if (!dev) {
   const formats = [
-    ['video/mp4; codecs="hev1.1.6.L93.B0"', ['HEVC', 'x265', 'H.265']],
-    ['audio/mp4; codecs="ac-3"', ['AC3', 'AC-3']],
-    ['audio/mp4; codecs="dtsc"', ['DTS']],
-    ['audio/mp4; codecs="truehd"', ['TrueHD']]
+    ['video/mp4; codecs="hev1.1.6.L93.B0"', ['HEVC', 'x265', 'H.265']]
   ] as const
 
   const video = document.createElement('video')
   for (const [format, tags] of formats) {
     if (!video.canPlayType(format)) exclusions.push(...tags)
-  }
-
-  if (!('audioTracks' in HTMLVideoElement.prototype)) {
-    exclusions.push('DUAL AUDIO', 'Dual Audio', 'MULTI AUDIO', 'Multi Audio')
   }
 }
 const debug = Debug('ui:extensions')
@@ -228,7 +221,7 @@ export const extensions = new class Extensions {
     const options = {
       ...await this._getQueryOptions(media, episode),
       resolution,
-      exclusions: _settings.enableExternal || _settings.bunnyPlayer ? [] : exclusions
+      exclusions: _settings.enableExternal ? [] : exclusions
     }
 
     const extopts = get(extensionOptions)

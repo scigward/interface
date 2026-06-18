@@ -64,7 +64,6 @@ export default {
     '--custom-destructive-foreground': '#fafafa',
     '--custom-ring': '#d4d4d4'
   },
-  bunnyPlayer: SUPPORTS.isIOS,
   nzbDomain: '',
   nzbLogin: '',
   nzbPassword: '',
