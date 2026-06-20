@@ -351,6 +351,7 @@ canvas {
 
 html,
 body {
+  text-size-adjust: none;
   height: 100vh !important;
   width: 100%;
   margin: 0;
@@ -723,4 +724,3 @@ details,
 .preserve-3d {
   transform-style: preserve-3d;
 } */
- 
