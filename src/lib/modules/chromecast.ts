@@ -7,13 +7,14 @@ import { assert } from '$lib/utils'
 const clientId = Math.trunc(1000000000000000 * Math.random()).toString()
 
 const params = new URLSearchParams({
-  clientId
-  // autoJoinPolicy: 'origin_scoped',
-  // defaultActionPolicy: 'create_session',
-  // launchTimeout: '6000',
-  // supportedAppTypes: 'WEB'
+  clientId,
+  capabilities: 'video_out',
+  autoJoinPolicy: 'origin_scoped',
+  defaultActionPolicy: 'create_session',
+  launchTimeout: '5000',
+  supportedAppTypes: 'WEB'
 })
-// &appParams=%7B%22launchCheckerParams%22%3A%7B%7D%7D'
+// &appParams=%7B%22launchCheckerParams%22%3A%7B%7D%7D' // this is for token auth i think
 
 export default new class ChromeCast {
   presentationRequest = typeof PresentationRequest !== 'undefined' && new PresentationRequest(['cast:F433D22E?' + params.toString()])
@@ -46,19 +47,19 @@ export default new class ChromeCast {
     assert(false)
   }
 
-  _requestId = 1
+  // _requestId = 1
 
-  async _monitorRequestId () {
-    try {
-      for await (const { data } of on(this._connection!, 'message')) {
-        try {
-          const { message } = JSON.parse(data)
-          const requestId = message.requestId
-          if (requestId) this._requestId = Math.max(this._requestId, requestId)
-        } catch {}
-      }
-    } catch {}
-  }
+  // async _monitorRequestId () {
+  //   try {
+  //     for await (const { data } of on(this._connection!, 'message')) {
+  //       try {
+  //         const { message } = JSON.parse(data)
+  //         const requestId = message.requestId
+  //         if (requestId) this._requestId = Math.max(this._requestId, requestId)
+  //       } catch {}
+  //     }
+  //   } catch {}
+  // }
 
   _send (message: unknown, type = 'v2_message') {
     this._connection?.send(JSON.stringify({
@@ -96,7 +97,7 @@ export default new class ChromeCast {
     await this.castClose(host)
     const connection = this._connection = await this.presentationRequest.start()
 
-    this._monitorRequestId()
+    // this._monitorRequestId()
     const sessionId = await this._waitForSession()
 
     this._send({
@@ -117,8 +118,6 @@ export default new class ChromeCast {
     const attachments = await native.attachments(hash, id)
     this._sendCustom({ type: 'attachments', attachments }, sessionId)
 
-    this._sendCustom({ type: 'eval', code: '"Hello world!"' }, sessionId)
-
     if (connection.state !== 'connected') return
 
     await once(connection, 'terminate')
@@ -126,8 +125,7 @@ export default new class ChromeCast {
 
   castClose: Native['castClose'] = async (host) => {
     if (host !== 'PresentationRequest' || !this._connection) return
-    const terminate = once(this._connection, 'terminate')
     this._connection.terminate()
-    await terminate
+    await once(this._connection, 'terminate')
   }
 }()

@@ -180,6 +180,21 @@
     gain.gain.value = muted ? 0 : clamp(volume, 0, 1)
   }
 
+  function srcObject (video: HTMLVideoElement) {
+    const dummy = document.createElement('canvas')
+    dummy.width = 1
+    dummy.height = 1
+    dummy.getContext('2d')!.fillRect(0, 0, 1, 1)
+    video.srcObject = dummy.captureStream(1)
+    video.play()
+
+    return {
+      destroy () {
+        video.srcObject = null
+      }
+    }
+  }
+
   function stopLoop () {
     cancelAnimationFrame(rafHandle)
     rafHandle = 0
@@ -650,3 +665,13 @@
   height={videoHeight}
 />
 <canvas class='size-full object-contain pointer-events-none absolute inset-0' use:createSubs />
+<video
+  use:srcObject
+  muted
+  playsinline
+  loop={true}
+  bind:paused
+  aria-hidden='true'
+  tabindex='-1'
+  class='hidden size-0.5 opacity-0 absolute inset-0 pointer-events-none -z-10'
+/>

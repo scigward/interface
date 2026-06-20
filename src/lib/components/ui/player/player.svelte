@@ -44,6 +44,7 @@
   import type { TorrentFile } from 'native'
   import type { SvelteMediaTimeRange } from 'svelte/elements'
 
+  import { dev } from '$app/env'
   import { goto, onNavigate } from '$app/navigation'
   import { page } from '$app/stores'
   import PictureInPictureOff from '$lib/components/icons/PictureInPicture.svelte'
@@ -114,7 +115,7 @@
     }
   }
 
-  let useMediaBunnyPlayback = SUPPORTS.isMobile
+  let useMediaBunnyPlayback = SUPPORTS.isMobile || dev
 
   let subtitles: Subs | undefined
   let deband: VideoDeband | undefined
@@ -323,9 +324,9 @@
     if (!ended && $settings.playerPause && !pictureInPictureElement) {
       if (visibility === 'hidden') {
         visibilityPaused = paused
-        paused = true
+        if (!paused) playPause()
       } else {
-        if (!visibilityPaused) paused = false
+        if (!visibilityPaused && paused) playPause()
       }
     }
   }
