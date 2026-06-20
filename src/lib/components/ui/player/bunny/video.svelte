@@ -686,7 +686,6 @@
 <video
   use:srcObject={{ videoWidth, videoHeight }}
   loop={true}
-  bind:paused
   tabindex='-1'
   class='size-0.5 absolute inset-0 pointer-events-none -z-10'
 />
