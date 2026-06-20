@@ -671,5 +671,5 @@
   loop={true}
   bind:paused
   tabindex='-1'
-  class='size-0.5 opacity-0 absolute inset-0 pointer-events-none -z-10'
+  class='size-full absolute inset-0 pointer-events-none -z-10'
 />
