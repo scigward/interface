@@ -187,6 +187,7 @@
     dummy.getContext('2d')!.fillRect(0, 0, 1, 1)
     video.srcObject = dummy.captureStream(1)
     video.play()
+    video.volume = 0.001
 
     return {
       destroy () {
@@ -667,11 +668,8 @@
 <canvas class='size-full object-contain pointer-events-none absolute inset-0' use:createSubs />
 <video
   use:srcObject
-  muted
-  playsinline
   loop={true}
   bind:paused
-  aria-hidden='true'
   tabindex='-1'
-  class='hidden size-0.5 opacity-0 absolute inset-0 pointer-events-none -z-10'
+  class='size-0.5 opacity-0 absolute inset-0 pointer-events-none -z-10'
 />
