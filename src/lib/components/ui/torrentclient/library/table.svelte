@@ -8,6 +8,7 @@
   import Columnheader from '../columnheader.svelte'
 
   import { MediaCell, StatusCell, DateCell, CheckboxCell } from './cells'
+  import ImportDialog from './import.svelte'
 
   import type { LibraryEntry } from 'native'
 
@@ -18,6 +19,7 @@
   import * as Table from '$lib/components/ui/table'
   import { client } from '$lib/modules/anilist'
   import native from '$lib/modules/native'
+  import SUPPORTS from '$lib/modules/settings/supports'
   import { server } from '$lib/modules/torrent'
   import { cn, fastPrettyBytes } from '$lib/utils'
 
@@ -157,6 +159,9 @@
       bind:value={$filterValue} />
     <MagnifyingGlass class='h-4 w-4 shrink-0 opacity-50 absolute left-3 text-muted-foreground z-10 pointer-events-none' />
   </div>
+  {#if !SUPPORTS.isMobile}
+    <ImportDialog />
+  {/if}
   <Button variant='secondary' size='icon' class='border-0 animated-icon' on:click={downloadTorrents} disabled={!$someRowsSelected}>
     <Download class={cn('size-4')} />
   </Button>

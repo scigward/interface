@@ -16,6 +16,8 @@ interface TorrentClient {
   deleteTorrents: Native['deleteTorrents']
   removeBackgroundTorrents: Native['removeBackgroundTorrents']
   library: Native['library']
+  qbittorrentLibrary: Native['qbittorrentLibrary']
+  importQBittorrent: Native['importQBittorrent']
   attachments: {
     attachments: Native['attachments']
     tracks: Native['tracks']
@@ -100,6 +102,8 @@ export default async function connect (key: string, domain: string) {
     deleteTorrents: torrent.deleteTorrents,
     removeBackgroundTorrents: torrent.removeBackgroundTorrents,
     library: torrent.library,
+    qbittorrentLibrary: torrent.qbittorrentLibrary,
+    importQBittorrent: torrent.importQBittorrent,
     attachments: async (hash, id) => {
       const files = await torrent.attachments.attachments(hash, id)
       return files.map(file => {

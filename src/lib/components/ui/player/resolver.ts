@@ -72,6 +72,11 @@ export async function resolveFilesPoorly (promise: Promise<{media: Media, id: st
   }
 }
 
+export async function resolveNames <T extends { name: string }> (files: T[]) {
+  const as = await anitomyscript(files.map(file => file.name))
+  return await AnimeResolver.resolveFileAnime(files.map((file, i) => ({ file, parseObject: as[i]! })))
+}
+
 // export function findInCurrent (obj) {
 //   const oldNowPlaying = nowPlaying.value
 
@@ -242,7 +247,7 @@ const AnimeResolver = new class AnimeResolver {
   }
 
   // TODO: anidb aka true episodes need to be mapped to anilist episodes a bit better, shit like mushoku offsets caused by episode 0's in between seasons
-  async resolveFileAnime (files: Array<{file: TorrentFile, parseObject: AnitomyResult}>) {
+  async resolveFileAnime <T> (files: Array<{file: T, parseObject: AnitomyResult}>) {
     if (!files.length) return []
 
     const uniq: Record<string, AnitomyResult> = {}
@@ -254,7 +259,7 @@ const AnimeResolver = new class AnimeResolver {
     }
     await this.findAnimesByTitle(Object.values(uniq))
 
-    const fileAnimes: ResolvedFile[] = []
+    const fileAnimes: Array<T & Pick<ResolvedFile, 'metadata'>> = []
     for (const { parseObject, file } of files) {
       let failed = false
       let episode

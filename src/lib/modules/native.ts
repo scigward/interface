@@ -144,6 +144,8 @@ export default Object.assign<Native, Partial<Native>>({
   deleteTorrents: async () => undefined,
   removeBackgroundTorrents: async () => undefined,
   library: async () => dummyLibrary,
+  qbittorrentLibrary: async () => [],
+  importQBittorrent: async () => [],
   attachments: async () => [],
   tracks: async () => [],
   subtitles: async () => undefined,
